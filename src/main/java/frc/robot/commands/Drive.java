@@ -78,23 +78,19 @@ public class Drive extends CommandBase
     public void execute()
     {
         /**
-         * Get Joystick data
-         */
-        
-        
-        inputLeftX = oi.getLeftDriveX();
-        inputLeftY = oi.getLeftDriveY();
-        inputRightX = oi.getRightDriveX();
-        inputRightY = oi.getRightDriveY();
-        inputLeftB = oi.getDriveLeftBumper();
-        /**
          * Ramp
          */
         
+        inputLeftX = oi.getLeftDriveX();
+        inputLeftY = - oi.getLeftDriveY();
+        inputRightY = oi.getRightDriveY();
+
+        /**
+         * Ramp
+         */
         deltaLeftX = inputLeftX - prevLeftX;
         deltaLeftY = inputLeftY - prevLeftY;
         deltaRightX = inputRightX - prevRightX;
-        deltaRightY = inputRightY - prevRightY;
         if(deltaLeftX >= DELTA_LIMIT)
             inputLeftX += RAMP_UP;
         else if (deltaLeftX <= -DELTA_LIMIT)
@@ -107,13 +103,8 @@ public class Drive extends CommandBase
             inputRightX += RAMP_UP;
         else if (deltaRightX <= -DELTA_LIMIT)
             inputRightX -= RAMP_DOWN;
-        if(deltaRightY >= DELTA_LIMIT)
-            inputRightY += RAMP_UP;
-        else if (deltaRightY <= -DELTA_LIMIT)
-            inputRightY -= RAMP_DOWN;
         prevLeftY = inputLeftY;
         prevLeftX = inputLeftX;
-        prevRightY = inputRightY;
         prevRightX = inputRightX;
 
         /**
@@ -124,10 +115,7 @@ public class Drive extends CommandBase
         /*train.setMotor0Speed((-inputLeftX+inputRightY)/(inputLeftB+0.7));
         train.setMotor1Speed(((0.5*inputLeftX)-(1.2247448714*inputLeftY)+inputRightY)/(inputLeftB+1));
         train.setMotor2Speed(((0.5*inputLeftX)+(1.2247448714*inputLeftY)+inputRightY)/(inputLeftB+0.7));*/
-        train.setMotor0Speed((-inputLeftX+inputRightY)/1.5);
-        train.setMotor1Speed(((0.5*inputLeftX)-(1.2247448714*inputLeftY)+inputRightY)/1.5);
-        train.setMotor2Speed(((0.5*inputLeftX)+(1.2247448714*inputLeftY)+inputRightY)/1.5);
-
+        train.holonomicDrive(inputLeftX, inputLeftY, inputRightY);
         /*
         train.setMotor0Speed(0.5 * inputLeftX - 0.866 * inputLeftY + inputRightY);
         train.setMotor1Speed(0.5 * inputLeftX + 0.866 * inputLeftY + inputRightY);
@@ -142,9 +130,7 @@ public class Drive extends CommandBase
     @Override
     public void end(boolean interrupted)
     {
-        train.setMotor0Speed(0);
-        train.setMotor1Speed(0);
-        train.setMotor2Speed(0);
+        train.setDriveMotorSpeeds(0.,0.,0.);
     }
 
     /**

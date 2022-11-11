@@ -29,12 +29,14 @@ public class Training extends SubsystemBase
     /**
      * Motors
      */
-    private TitanQuad motor0;
-    private TitanQuad motor1;
-    private TitanQuad motor2;
+    private TitanQuad leftMotor;
+    private TitanQuad rightMotor;
+    private TitanQuad backMotor;
     private Servo servo;
     private ServoContinuous servoC;
-    private TitanQuadEncoder enc;
+    private TitanQuadEncoder leftEncoder;
+    private TitanQuadEncoder rightEncoder;
+    private TitanQuadEncoder backEncoder;
 
     /**
      * Sensors
@@ -57,32 +59,58 @@ public class Training extends SubsystemBase
                                             .withProperties(Map.of("min", -1, "max", 1))
                                             .getEntry();
     private NetworkTableEntry sharpIR = tab.add("Sharp IR", 0)
+                                            .withWidget(BuiltInWidgets.kNumberBar)
                                             .getEntry();
     private NetworkTableEntry ultraSonic = tab.add("Ultrasonic", 0)
+    .withWidget(BuiltInWidgets.kNumberBar)
                                             .getEntry();
     private NetworkTableEntry cobraRaw = tab.add("Cobra Raw", 0)
+    .withWidget(BuiltInWidgets.kNumberBar)
                                             .getEntry();
     private NetworkTableEntry cobraVoltage = tab.add("Cobra Voltage", 0)
+    .withWidget(BuiltInWidgets.kNumberBar)
                                             .getEntry();
-private NetworkTableEntry Xpos = tab.add("encoder", 0)
+    private NetworkTableEntry LeftEncoder = tab.add("Left Encoder", 0)
+                                            .withWidget(BuiltInWidgets.kNumberBar)
+                                            .getEntry();
+    private NetworkTableEntry RightEncoder = tab.add("Right Encoder", 0)
+                                            .withWidget(BuiltInWidgets.kNumberBar)
+                                            .getEntry();
+    private NetworkTableEntry BackEncoder = tab.add("Back Encoder", 0)
+                                            .withWidget(BuiltInWidgets.kNumberBar)
+                                            .getEntry();
+    private NetworkTableEntry LeftSpeed = tab.add("LeftSpeed", 0)
+                                            .withWidget(BuiltInWidgets.kNumberBar)
+                                            .getEntry();
+    private NetworkTableEntry RightSpeed = tab.add("RightSpeed", 0)
+                                            .withWidget(BuiltInWidgets.kNumberBar)
+                                            .getEntry();
+    private NetworkTableEntry BackSpeed = tab.add("BackSpeed", 0)
+                                            .withWidget(BuiltInWidgets.kNumberBar)
+                                            .getEntry();
+
+    private NetworkTableEntry ForwardForce = tab.add("Resulted Forward", 0)
+                                            .withWidget(BuiltInWidgets.kNumberBar)
                                             .getEntry();
     private NetworkTableEntry navX = tab.add("NavX Yaw", 0)
+                                            .withWidget(BuiltInWidgets.kNumberBar)
                                             .getEntry();
-    OI oi;
-                                        
+    OI oi;                
     public Training()
     {
         oi = new OI();
         //Motors
-        rightSpeed = new TitanQuad(Constants.TITAN_ID, 0);
-        leftSpeed = new TitanQuad(Constants.TITAN_ID, 1);
-        backSpeed = new TitanQuad(Constants.TITAN_ID, 2);
+        leftMotor = new TitanQuad(Constants.TITAN_ID, 3);
+        rightMotor = new TitanQuad(Constants.TITAN_ID, 0);
+        backMotor = new TitanQuad(Constants.TITAN_ID, 1);
+
         servo = new Servo(Constants.SERVO);
         servoC = new ServoContinuous(Constants.SERVO_C);
 
-        leftEncoder = new TitanQuadEncoder(leftMotor, Constants.M3, 0.23998277215);
-        rightEncoder = new TitanQuadEncoder(rightMotor, Constants.M0, 0.23998277215);
-        backEncoder = new TitanQuadEncoder(backMotor, Constants.M1, 0.23998277215);
+        leftEncoder = new TitanQuadEncoder(leftMotor, 3, 0.23998277215);
+        rightEncoder = new TitanQuadEncoder(rightMotor, 0, 0.23998277215);
+        backEncoder = new TitanQuadEncoder(backMotor, 1, 0.23998277215);
+
         //Sensors
         cobra = new Cobra();
         sharp = new AnalogInput(Constants.SHARP);
@@ -111,7 +139,12 @@ private NetworkTableEntry Xpos = tab.add("encoder", 0)
     {
         return cobra.getVoltage(channel);
     }
-
+    public boolean isAround(double a, double b,double c){
+        if(Math.abs(a-b)<=c){
+            return true;
+        }
+        return false;
+    }
     /**
      * Call for the distance measured by the Sharp IR Sensor
      * <p>
@@ -128,7 +161,7 @@ private NetworkTableEntry Xpos = tab.add("encoder", 0)
      * @param metric true or false for metric output
      * @return distance in mm when metric is true, and inches when metric is false
      */
-    public double getSonicDistance(boolean metric=true)
+    public double getSonicDistance(boolean metric)
     {
         sonic.ping();
         Timer.delay(0.005);
@@ -148,6 +181,11 @@ private NetworkTableEntry Xpos = tab.add("encoder", 0)
         return gyro.getYaw();
     }
 
+    public double getRoll()
+    {
+        return gyro.getRoll();
+    }
+
     /**
      * Resets the yaw angle back to zero
      */
@@ -157,10 +195,10 @@ private NetworkTableEntry Xpos = tab.add("encoder", 0)
     }
     public void holonomicDrive(double x, double y, double z)
     {
-        double rightSpeed = ((x / 3) - (y / Math.sqrt(3)) + z) * Math.sqrt(3);
-        double leftSpeed = ((x / 3) + (y / Math.sqrt(3)) + z) * Math.sqrt(3);
-        double backSpeed = (-2 * x / 3) + z;
-
+        double rightSpeed = ((((x / 3) - (y / Math.sqrt(3))) * Math.sqrt(3))+z)/2;
+        double leftSpeed = ((((x / 3) + (y / Math.sqrt(3))) * Math.sqrt(3))+z)/2;
+        double backSpeed = ((-x) + z)/2;
+        /*
         double max = Math.abs(rightSpeed);
         if (Math.abs(leftSpeed) > max) max = Math.abs(leftSpeed);
         if (Math.abs(backSpeed) > max) max = Math.abs(backSpeed);
@@ -170,8 +208,10 @@ private NetworkTableEntry Xpos = tab.add("encoder", 0)
             rightSpeed /= max;
             leftSpeed /= max;
             backSpeed /= max;
-        }
-
+        }*/
+        //LeftSpeed.setDouble(leftSpeed);
+        //RightSpeed.setDouble(rightSpeed);
+        //BackSpeed.setDouble(backSpeed);
         leftMotor.set(leftSpeed);
         rightMotor.set(rightSpeed);
         backMotor.set(backSpeed);
@@ -194,6 +234,10 @@ private NetworkTableEntry Xpos = tab.add("encoder", 0)
         return rightEncoder.getEncoderDistance() * -1;
     }
 
+    public double getAverageForwardEncoderDistance()
+    {
+        return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2; 
+    }
     /**
      * Gets the encoder distance for the back drive motor
      * <p>
@@ -223,20 +267,46 @@ private NetworkTableEntry Xpos = tab.add("encoder", 0)
     public void setServoSpeed(){
         servoC.set(servoSpeed.getDouble(0.0));
     }
+    /**
+     * Sets the speed of the motor
+     * <p>
+     * @param speed range -1 to 1 (0 stop)
+     */
+    public void setLeftMotorSpeed(double speed)
+    {
+        leftMotor.set(speed);
+    }
 
-    public void setMotor0Speed(double speed){
-        motor0.set(speed);
+    /**
+     * Sets the speed of the motor
+     * <p>
+     * @param speed range -1 to 1 (0 stop)
+     */
+    public void setRightMotorSpeed(double speed)
+    {
+        rightMotor.set(speed);
     }
-    public void setMotor1Speed(double speed){
-        motor1.set(speed);
+
+    /**
+     * Sets the speed of the motor
+     * <p>
+     * @param speed range -1 to 1 (0 stop)
+     */
+    public void setBackMotorSpeed(double speed)
+    {
+        backMotor.set(speed);
     }
-    public void setMotor2Speed(double speed){
-        motor2.set(speed);
-    }
-    public void setMotorSpeed(double speed1,double speed2,double speed3){
-        motor0.set(speed1);
-        motor1.set(speed2);
-        motor2.set(speed3);
+
+    /**
+     * Sets the speed of the drive motors
+     * <p>
+     * @param speed range -1 to 1 (0 stop)
+     */
+    public void setDriveMotorSpeeds(double leftSpeed, double rightSpeed, double backSpeed)
+    {
+        leftMotor.set(leftSpeed);
+        rightMotor.set(rightSpeed);
+        backMotor.set(backSpeed);
     }
     @Override
     public void periodic()
@@ -247,6 +317,10 @@ private NetworkTableEntry Xpos = tab.add("encoder", 0)
         //ultraSonic.setDouble(getSonicDistance(true)); //set to true because we want metric
         //cobraRaw.setDouble(getCobraRawValue(0)); //Just going to use channel 0 for demo
         //cobraVoltage.setDouble(getCobraVoltage(0));
+        LeftEncoder.setDouble(getLeftEncoderDistance());
+        RightEncoder.setDouble(getRightEncoderDistance());
+        BackEncoder.setDouble(getBackEncoderDistance());
+        ForwardForce.setDouble(getAverageForwardEncoderDistance());
         navX.setDouble(getYaw());
     }
 }

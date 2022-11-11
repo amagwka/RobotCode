@@ -9,6 +9,9 @@ package frc.robot;
 
 import frc.robot.gamepad.OI;
 import frc.robot.subsystems.Training;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
 
 public class RobotContainer {
@@ -16,15 +19,24 @@ public class RobotContainer {
   /**
    * Create the subsystems and gamepad objects
    */
+  
   public static Training train;
   public static OI oi;
 
   public RobotContainer()
   {
       //Create new instances
+      //autonomousCommand = new Autonomous(-1000,1,-80,0.1);
+      //drive=new Drive();
       train = new Training();
       oi = new OI();
-      train.setDefaultCommand(new Drive());
+      //train.setDefaultCommand(new Autonomous(-1000,1,-80,0.1));
       
+  }/*
+  public CommandBase getTeleopCommand() {
+    return drive;
   }
+  public CommandBase getAutonomousCommand() {
+    return autonomousCommand;
+  }*/
 }

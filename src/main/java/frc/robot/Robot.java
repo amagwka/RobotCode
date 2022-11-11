@@ -9,6 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Autonomous;
+import frc.robot.commands.Drive;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -58,7 +61,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
+    CommandScheduler.getInstance()
+    .schedule(new SequentialCommandGroup(
+      new Autonomous(-1000,1,-80,0.1),
+      new Drive()));
   }
 
   /**
@@ -70,7 +76,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
+    CommandScheduler.getInstance().schedule(new Drive());
   }
   @Override
   public void teleopPeriodic() {
