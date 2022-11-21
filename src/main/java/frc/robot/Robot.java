@@ -62,9 +62,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     CommandScheduler.getInstance()
-    .schedule(new SequentialCommandGroup(
-      new Autonomous(-1000,1,-80,0.1),
-      new Drive()));
+    .schedule(
+      new Autonomous(-1000,1,-80,0.1));
   }
 
   /**

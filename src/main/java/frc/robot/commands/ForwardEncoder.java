@@ -6,7 +6,7 @@ import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Training;
 
-public class Autonomous extends CommandBase
+public class ForwardEncoder extends CommandBase
 {
     /**
      * Bring in Subsystem and Gamepad code
@@ -23,7 +23,7 @@ public class Autonomous extends CommandBase
     
     double[] motors = new double[] { 0, 0, 0 };
 
-    public Autonomous(double setpointDistance, double epsilonDistance, double setpointYaw, double epsilonYaw)
+    public ForwardEncoder(double setpointDistance, double epsilonDistance, double setpointYaw, double epsilonYaw)
     {
         this.setpointDistance = setpointDistance;
         this.setpointYaw = setpointYaw;
