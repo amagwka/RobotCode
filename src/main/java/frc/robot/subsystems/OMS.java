@@ -33,12 +33,12 @@ public class OMS extends SubsystemBase
          * Motors
          */
         elevator = new TitanQuad(Constants.TITAN_ID, 2);
-        claw = new Servo(Constants.DIF_SERVO);
+        claw = new Servo(1);
 
         /**
          * Sensors
          */
-        elevatorEncoder = new TitanQuadEncoder(elevator, 2, );
+        elevatorEncoder = new TitanQuadEncoder(elevator, 2, 0.42917932426);
     }
 
     /**
@@ -66,8 +66,7 @@ public class OMS extends SubsystemBase
      * <p>
      * @param degrees valid input is 0 to 300
      */
-    public void setServoPosition(double degrees)
-    {
+    public void setServoPosition(double degrees){
         claw.setAngle(degrees);
     }
 

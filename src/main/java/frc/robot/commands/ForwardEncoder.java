@@ -28,7 +28,7 @@ public class ForwardEncoder extends CommandBase {
         this.delta = delta;
         addRequirements(train);
 
-        pidYAxis = new PIDController(0.1, 0.0, 1.0);
+        pidYAxis = new PIDController(1.0, 0.5, 1.0);
         pidYAxis.setTolerance(epsilonDistance);
 
         //pidZAxis = new PIDController(0.1, 0.5, 0.1);
@@ -53,7 +53,7 @@ public class ForwardEncoder extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-        train.setDriveMotorSpeeds(0., 0., 0.);
+        train.setDriveMotorSpeeds(0.9, 0., 0.);
     }
 
     /**

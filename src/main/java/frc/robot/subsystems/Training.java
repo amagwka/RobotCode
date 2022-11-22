@@ -77,9 +77,9 @@ public class Training extends SubsystemBase {
         servo = new Servo(Constants.SERVO);
         servoC = new ServoContinuous(Constants.SERVO_C);
 
-        leftEncoder = new TitanQuadEncoder(leftMotor, 3, 1);
-        rightEncoder = new TitanQuadEncoder(rightMotor, 0, 1);
-        backEncoder = new TitanQuadEncoder(backMotor, 1, 1);
+        leftEncoder = new TitanQuadEncoder(leftMotor, 3, 0.429179324);
+        rightEncoder = new TitanQuadEncoder(rightMotor, 0, 0.429179324);
+        backEncoder = new TitanQuadEncoder(backMotor, 1, 0.429179324);
 
         // Sensors
         cobra = new Cobra();

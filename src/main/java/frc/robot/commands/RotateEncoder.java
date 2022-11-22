@@ -35,7 +35,7 @@ public class RotateEncoder extends CommandBase {
         pidBackAxis = new PIDController(0.2, 0., 0.);
         pidBackAxis.setTolerance(1);
 
-        pidZAxis = new PIDController(0.2, 0., 0.);
+        pidZAxis = new PIDController(1., 0.5, 1.);
         pidZAxis.setTolerance(epsilonYaw);
     }
 
