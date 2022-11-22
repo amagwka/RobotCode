@@ -42,11 +42,11 @@ public class RotateEncoder extends CommandBase {
     @Override
     public void initialize() {
         motors[0] = (train.getRightEncoderDistance() + train.getBackEncoderDistance())
-                - train.getLeftEncoderDistance() * 2;
+                - (train.getLeftEncoderDistance() * 2);
         motors[1] = (train.getLeftEncoderDistance() + train.getBackEncoderDistance())
-                - train.getRightEncoderDistance() * 2;
+                - (train.getRightEncoderDistance() * 2);
         motors[2] = (train.getLeftEncoderDistance() + train.getRightEncoderDistance())
-                - train.getBackEncoderDistance() * 2;
+                - (train.getBackEncoderDistance() * 2);
         setpointYaw = (train.getYaw()+setpointYaw) % 360;
     }
 
@@ -55,14 +55,14 @@ public class RotateEncoder extends CommandBase {
         for (int i = 0; i < 3; i++) {
             train.holonomicDrive(0.0, 0.0, MathUtil.clamp(pidZAxis.calculate(train.getYaw(), setpointYaw), -0.2, 0.2));
         }
-
+        /*
         train.setDriveMotorSpeeds(
-                MathUtil.clamp(pidZAxis.calculate(train.getRightEncoderDistance() + train.getBackEncoderDistance()
+                MathUtil.clamp(pidLeftAxis.calculate(train.getRightEncoderDistance() + train.getBackEncoderDistance()
                         - train.getLeftEncoderDistance() * 2, motors[0]), -0.2, 0.2),
-                MathUtil.clamp(pidZAxis.calculate(train.getLeftEncoderDistance() + train.getBackEncoderDistance()
+                MathUtil.clamp(pidRightAxis.calculate(train.getLeftEncoderDistance() + train.getBackEncoderDistance()
                         - train.getRightEncoderDistance() * 2, motors[1]), -0.2, 0.2),
-                MathUtil.clamp(pidZAxis.calculate(train.getLeftEncoderDistance() + train.getRightEncoderDistance()
-                        - train.getBackEncoderDistance() * 2, motors[2]), -0.2, 0.2));
+                MathUtil.clamp(pidBackAxis.calculate(train.getLeftEncoderDistance() + train.getRightEncoderDistance()
+                        - train.getBackEncoderDistance() * 2, motors[2]), -0.2, 0.2));*/
     }
 
     @Override

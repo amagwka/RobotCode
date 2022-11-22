@@ -19,7 +19,6 @@ public class ForwardEncoder extends CommandBase {
 
     // Create two PID Controllers
     PIDController pidYAxis;
-    PIDController pidZAxis;
 
     double[] motors = new double[] { 0, 0, 0 };
 
@@ -29,11 +28,11 @@ public class ForwardEncoder extends CommandBase {
         this.delta = delta;
         addRequirements(train);
 
-        pidYAxis = new PIDController(1.0, 0.5, 0.1);
+        pidYAxis = new PIDController(0.1, 0.0, 1.0);
         pidYAxis.setTolerance(epsilonDistance);
 
-        pidZAxis = new PIDController(0.1, 0.5, 0.1);
-        pidZAxis.setTolerance(epsilonYaw);
+        //pidZAxis = new PIDController(0.1, 0.5, 0.1);
+        //pidZAxis.setTolerance(epsilonYaw);
     }
 
     @Override
@@ -44,7 +43,7 @@ public class ForwardEncoder extends CommandBase {
     @Override
     public void execute() {
             train.holonomicDrive(0.0, MathUtil
-                    .clamp(pidYAxis.calculate(train.getAverageForwardEncoderDistance(), setpointDistance), -0.5, 0.5),0.0);
+                    .clamp(pidYAxis.calculate(train.getAverageForwardEncoderDistance(), setpointDistance), -0.7, 0.7),0.0);
     }
 
     /**

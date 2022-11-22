@@ -65,8 +65,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     CommandScheduler.getInstance()
     .schedule(new SequentialCommandGroup(
-            new ForwardEncoder(1000, 0.1, 0, 0.1,true),
-            new RotateEncoder(90,0.1,true,true)));
+            new ForwardEncoder(2000, 0.1, 0, 0.1,true),
+            new RotateEncoder(90,0.1,true,true),
+            new ForwardEncoder(2000, 0.1, 0, 0.1,true)));
   }
 
   /**
