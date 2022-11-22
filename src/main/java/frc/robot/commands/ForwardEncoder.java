@@ -6,27 +6,27 @@ import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Training;
 
-public class ForwardEncoder extends CommandBase
-{
+public class ForwardEncoder extends CommandBase {
     /**
      * Bring in Subsystem and Gamepad code
      */
     private static final Training train = RobotContainer.train;
 
     private double setpointDistance;
-    private double setpointYaw; 
+    private double setpointYaw;
+    private double setpointYawDelta;
+    private boolean delta;
 
-    //Create two PID Controllers
+    // Create two PID Controllers
     PIDController pidYAxis;
     PIDController pidZAxis;
 
-    
     double[] motors = new double[] { 0, 0, 0 };
 
-    public ForwardEncoder(double setpointDistance, double epsilonDistance, double setpointYaw, double epsilonYaw)
-    {
+    public ForwardEncoder(double setpointDistance, double epsilonDistance, double setpointYaw, double epsilonYaw,
+            boolean delta) {
         this.setpointDistance = setpointDistance;
-        this.setpointYaw = setpointYaw;
+        this.delta = delta;
         addRequirements(train);
 
         pidYAxis = new PIDController(1.0, 0.5, 0.1);
@@ -37,17 +37,14 @@ public class ForwardEncoder extends CommandBase
     }
 
     @Override
-    public void initialize()
-    {
-
+    public void initialize() {
+        setpointDistance += train.getAverageForwardEncoderDistance();
     }
 
     @Override
-    public void execute()
-    {
-        train.holonomicDrive(0.0,
-         MathUtil.clamp(pidYAxis.calculate(train.getAverageForwardEncoderDistance(), setpointDistance), -0.5, 0.5),
-         MathUtil.clamp(pidZAxis.calculate(train.getYaw(), setpointYaw), -0.1, 0.1));
+    public void execute() {
+            train.holonomicDrive(0.0, MathUtil
+                    .clamp(pidYAxis.calculate(train.getAverageForwardEncoderDistance(), setpointDistance), -0.5, 0.5),0.0);
     }
 
     /**
@@ -56,17 +53,17 @@ public class ForwardEncoder extends CommandBase
      * Good place to stop motors in case of an error
      */
     @Override
-    public void end(boolean interrupted)
-    {
-        train.setDriveMotorSpeeds(0.,0.,0.);
+    public void end(boolean interrupted) {
+        train.setDriveMotorSpeeds(0., 0., 0.);
     }
-
 
     /**
      * Check to see if command is finished
      */
     @Override
-    public boolean isFinished(){
-        return train.isAround(train.getYaw(), setpointYaw, 0.5);
+    public boolean isFinished() {
+        // return train.isAround(pidYAxis.getPositionError(), 0, 1.0) &&
+        // train.isAround(pidZAxis.getPositionError(), 0, 0.5);
+        return pidYAxis.atSetpoint();
     }
 }

@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
+import frc.robot.commands.ForwardEncoder;
+import frc.robot.commands.RotateEncoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -62,8 +64,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     CommandScheduler.getInstance()
-    .schedule(
-      new Autonomous(-1000,1,-80,0.1));
+    .schedule(new SequentialCommandGroup(
+            new ForwardEncoder(1000, 0.1, 0, 0.1,true),
+            new RotateEncoder(90,0.1,true,true)));
   }
 
   /**
