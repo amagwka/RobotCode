@@ -27,8 +27,7 @@ public class OMS extends SubsystemBase
     private NetworkTableEntry elevatorEncoderValue = tab.add("Elevator Encoder", 0)
                                                     .getEntry();
 
-    public OMS ()
-    {
+    public OMS (){
         /**
          * Motors
          */

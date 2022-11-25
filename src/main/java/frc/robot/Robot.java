@@ -7,10 +7,18 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.first.cameraserver.CameraServer;
+
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ForwardEncoder;
 import frc.robot.commands.RotateEncoder;
@@ -33,6 +41,24 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer. 
     m_robotContainer = new RobotContainer();
+    new Thread(()->{
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      camera.setResolution(640, 480);
+      camera.setFPS(30);
+
+      CvSink cvSink = CameraServer.getInstance().getVideo();
+      CvSource outputStream = CameraServer.getInstance().putVideo("GrayScale", 640, 480);
+
+      Mat source = new Mat();
+      Mat output = new Mat();
+
+      while(!Thread.interrupted()){
+        if(cvSink.grabFrame(source) == 0)
+          continue;
+        Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+        outputStream.putFrame(output);
+      }
+    }).start();
   }
 
   /**
@@ -46,12 +72,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
   }
-
-  /**
-   * This function is called once each time the robot enters Disabled mode.
-   */
+  
   @Override
   public void disabledInit() {
+    
   }
 
   @Override
@@ -85,6 +109,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+
     CommandScheduler.getInstance().cancelAll();
   }
   @Override

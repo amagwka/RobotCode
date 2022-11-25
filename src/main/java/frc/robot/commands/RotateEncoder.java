@@ -7,15 +7,11 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Training;
 
 public class RotateEncoder extends CommandBase {
-    /**
-     * Bring in Subsystem and Gamepad code
-     */
+
     private static final Training train = RobotContainer.train;
 
     private double setpointYaw;
-    private boolean delta;
 
-    // Create two PID Controllers
     PIDController pidLeftAxis, pidRightAxis, pidBackAxis;
     PIDController pidZAxis;
 
@@ -23,7 +19,6 @@ public class RotateEncoder extends CommandBase {
 
     public RotateEncoder(double setpointYaw, double epsilonYaw, boolean enablePIDForEachMotor,boolean delta) {
         this.setpointYaw = setpointYaw;
-        this.delta = delta;
         addRequirements(train);
 
         pidLeftAxis = new PIDController(0.2, 0., 0.);
