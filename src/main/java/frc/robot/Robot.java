@@ -7,13 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.first.cameraserver.CameraServer;
-
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -41,7 +34,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer. 
     m_robotContainer = new RobotContainer();
-    new Thread(()->{
+    /* new Thread(()->{
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
       camera.setResolution(640, 480);
       camera.setFPS(30);
@@ -58,16 +51,8 @@ public class Robot extends TimedRobot {
         Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
         outputStream.putFrame(output);
       }
-    }).start();
+    }).start();*/
   }
-
-  /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
@@ -80,13 +65,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+
   }
   
   @Override
   public void autonomousInit() {
     CommandScheduler.getInstance()
     .schedule(new SequentialCommandGroup(
-            new ForwardEncoder(1800, 0.1, 0, 0.1,true)));
+            new ForwardEncoder(100, 1,true)));
   }
   
   @Override

@@ -12,11 +12,11 @@ public final class Constants
     /**
      * Motor Constants
      */
-    public static final int TITAN_ID        = 42; 
-    public static final int MOTOR           = 2;
-    public static final int SERVO_GRIPPER         = 0;
-    public static final int SERVO_LIFT         = 1;
-    public static final int SERVO_GRIPPER_ROTATE         = 2;
+    public static final int TITAN_ID                 = 42; 
+    public static final int MOTOR_ROTATE_LIFT        = 2;
+    public static final int SERVO_GRIPPER            = 0;
+    public static final int SERVO_LIFT               = 1;
+    public static final int SERVO_GRIPPER_ROTATE     = 2;
 
 
     /**

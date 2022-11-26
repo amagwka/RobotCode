@@ -12,8 +12,7 @@ public class ForwardEncoder extends CommandBase {
     PIDController pidYAxis;
 
 
-    public ForwardEncoder(double setpointDistance, double epsilonDistance, double setpointYaw, double epsilonYaw,
-            boolean delta) {
+    public ForwardEncoder(double setpointDistance, double epsilonDistance,boolean delta) {
         this.setpointDistance = setpointDistance;
         this.setpointDistance += train.getAverageForwardEncoderDistance();
         addRequirements(train);

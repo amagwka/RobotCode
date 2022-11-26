@@ -1,85 +1,87 @@
 package frc.robot.subsystems;
+
+import java.util.Map;
+
 import com.studica.frc.Servo;
+import com.studica.frc.ServoContinuous;
 import com.studica.frc.TitanQuad;
 import com.studica.frc.TitanQuadEncoder;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-public class OMS extends SubsystemBase
-{
+
+public class OMS extends SubsystemBase {
     /**
      * Motors
      */
-    private TitanQuad elevator;
-    private Servo claw;
+    private TitanQuad R_lift;
+    private Servo gripper, R_gripper;
+    private ServoContinuous lift;
 
     /**
      * Sensors
      */
-    private TitanQuadEncoder elevatorEncoder;
+    private TitanQuadEncoder R_liftEncoder;
 
     /**
      * Shuffleboard
      */
-    private ShuffleboardTab tab = Shuffleboard.getTab("Training Robot"); 
-    private NetworkTableEntry elevatorEncoderValue = tab.add("Elevator Encoder", 0)
-                                                    .getEntry();
+    private ShuffleboardTab tab = Shuffleboard.getTab("OMS");
+    private NetworkTableEntry R_liftEncoderValue = tab.add("R_lift Encoder", 0).getEntry();
 
-    public OMS (){
-        /**
-         * Motors
-         */
-        elevator = new TitanQuad(Constants.TITAN_ID, 2);
-        claw = new Servo(1);
+    private NetworkTableEntry gripperValue = tab.add("gripper", 0).withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", 0, "max", 300)).getEntry();
 
-        /**
-         * Sensors
-         */
-        elevatorEncoder = new TitanQuadEncoder(elevator, 2, 0.42917932426);
+    private NetworkTableEntry R_gripperValue = tab.add("R_gripper", 0).withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", 0, "max", 300)).getEntry();
+
+    private NetworkTableEntry liftValue = tab.add("lift", 0).withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", -1, "max", 1)).getEntry();
+
+    public OMS() {
+        R_lift = new TitanQuad(Constants.TITAN_ID, Constants.MOTOR_ROTATE_LIFT);
+        gripper = new Servo(Constants.SERVO_GRIPPER);
+        lift = new ServoContinuous(Constants.SERVO_LIFT);
+        R_gripper = new Servo(Constants.SERVO_GRIPPER_ROTATE);
+        
+        
+        
+        R_liftEncoder = new TitanQuadEncoder(R_lift, Constants.MOTOR_ROTATE_LIFT, 0.42917932426);
     }
 
-    /**
-     * Sets the speed of the motor
-     * <p>
-     * @param speed range -1 to 1 (0 stop)
-     */
-    public void setElevatorMotorSpeed(double speed)
-    {
-        elevator.set(speed);
+    public void setR_liftMotorSpeed(double speed) {
+        R_lift.set(speed);
     }
 
-    /**
-     * Gets the encoder distance for the elevator motor
-     * <p>
-     * @return distance traveled in mm
-     */
-    public double getElevatorEncoderDistance()
-    {
-        return elevatorEncoder.getEncoderDistance();
+    public double getR_liftEncoderDistance() {
+        return R_liftEncoder.getEncoderDistance();
     }
 
-    /**
-     * Sets the angle at which the servo is located
-     * <p>
-     * @param degrees valid input is 0 to 300
-     */
-    public void setServoPosition(double degrees){
-        claw.setAngle(degrees);
+
+    public void setGripperPosition(double degrees) {
+        gripper.setAngle(degrees);
     }
 
-    /**
-     * Reset the elevator encoder
-     */
-    public void resetEncoders()
-    {
-        elevatorEncoder.reset();
+    public void setR_gripperPosition(double degrees) {
+        gripper.setAngle(degrees);
+    }
+
+    public void setLiftSpeed(double speed) {
+        lift.setSpeed(speed);
+    }
+
+    public void resetEncoders() {
+        R_liftEncoder.reset();
     }
 
     @Override
-    public void periodic()
-    {
-        elevatorEncoderValue.setDouble(getElevatorEncoderDistance());
+    public void periodic() {
+        R_liftEncoderValue.setDouble(getR_liftEncoderDistance());
+        setGripperPosition(gripperValue.getDouble(0.0));
+        setLiftSpeed(liftValue.getDouble(0.0));
+        setR_gripperPosition(R_gripperValue.getDouble(0.0));
     }
 }

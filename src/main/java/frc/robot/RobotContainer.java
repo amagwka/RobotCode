@@ -8,6 +8,7 @@
 package frc.robot;
 
 import frc.robot.gamepad.OI;
+import frc.robot.subsystems.OMS;
 import frc.robot.subsystems.Training;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -22,6 +23,7 @@ public class RobotContainer {
   
   public static Training train;
   public static OI oi;
+  public static OMS oms;
 
   public RobotContainer()
   {
@@ -29,6 +31,7 @@ public class RobotContainer {
       //autonomousCommand = new Autonomous(-1000,1,-80,0.1);
       //drive=new Drive();
       train = new Training();
+      oms = new OMS();
       oi = new OI();
       //train.setDefaultCommand(new Autonomous(-1000,1,-80,0.1));
       
