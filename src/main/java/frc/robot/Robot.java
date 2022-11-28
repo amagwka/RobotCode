@@ -8,13 +8,20 @@
 package frc.robot;
 
 
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Drive;
-import frc.robot.commands.ForwardEncoder;
-import frc.robot.commands.RotateEncoder;
+//import frc.robot.commands.ForwardEncoder;
+//import frc.robot.commands.RotateEncoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,7 +41,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer. 
     m_robotContainer = new RobotContainer();
-    /* new Thread(()->{
+    new Thread(()->{
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
       camera.setResolution(640, 480);
       camera.setFPS(30);
@@ -51,7 +58,7 @@ public class Robot extends TimedRobot {
         Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
         outputStream.putFrame(output);
       }
-    }).start();*/
+    }).start();
   }
   @Override
   public void robotPeriodic() {
@@ -70,9 +77,9 @@ public class Robot extends TimedRobot {
   
   @Override
   public void autonomousInit() {
-    CommandScheduler.getInstance()
+    /*CommandScheduler.getInstance()
     .schedule(new SequentialCommandGroup(
-            new ForwardEncoder(100, 1,true)));
+            new ForwardEncoder(100, 1,true)));*/
   }
   
   @Override
@@ -81,7 +88,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    CommandScheduler.getInstance().schedule(new Drive());
+    //CommandScheduler.getInstance().schedule(new Drive());
   }
   @Override
   public void teleopPeriodic() {
@@ -94,19 +101,5 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void testPeriodic() {
-  }
-
-  /**
-   * added here to satisfy the watchdog
-   */
-  @Override
-  public void simulationInit(){
-  }
-  
-  /**
-   * added here to satisfy the watchdog
-   */ 
-  @Override
-  public void simulationPeriodic(){
   }
 }

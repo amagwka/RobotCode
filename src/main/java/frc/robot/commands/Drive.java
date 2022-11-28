@@ -60,8 +60,7 @@ public class Drive extends CommandBase
     /**
      * Constructor
      */
-    public Drive()
-    {
+    public Drive(){
         addRequirements(train,oms); //add the traning subsystem as a requirement 
     }
 
@@ -69,16 +68,14 @@ public class Drive extends CommandBase
      * Code here will run once when the command is called for the first time
      */
     @Override
-    public void initialize()
-    {
+    public void initialize(){
 
     }
     /**
      * Code here will run continously every robot loop until the command is stopped
      */
     @Override
-    public void execute()
-    {
+    public void execute(){
         /**
          * Ramp
          */
@@ -130,8 +127,7 @@ public class Drive extends CommandBase
      * Good place to stop motors in case of an error
      */
     @Override
-    public void end(boolean interrupted)
-    {
+    public void end(boolean interrupted){
         train.setDriveMotorSpeeds(0.,0.,0.);
     }
 
@@ -139,8 +135,7 @@ public class Drive extends CommandBase
      * Check to see if command is finished
      */
     @Override
-    public boolean isFinished()
-    {
+    public boolean isFinished(){
         return false;
     }
 }

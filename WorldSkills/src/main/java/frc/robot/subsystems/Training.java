@@ -49,6 +49,15 @@ public class Training extends SubsystemBase {
      * Shuffleboard
      */
     private ShuffleboardTab tab = Shuffleboard.getTab("Training");
+    private NetworkTableEntry servoPos = tab.add("Servo Position", 0).withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0, "max", 300)).getEntry();
+    private NetworkTableEntry servoSpeed = tab.add("Servo Speed", 0).withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", -1, "max", 1)).getEntry();
+    private NetworkTableEntry sharpIR = tab.add("Sharp IR", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    private NetworkTableEntry ultraSonic = tab.add("Ultrasonic", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    private NetworkTableEntry cobraRaw = tab.add("Cobra Raw", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    private NetworkTableEntry cobraVoltage = tab.add("Cobra Voltage", 0).withWidget(BuiltInWidgets.kNumberBar)
+            .getEntry();
     private NetworkTableEntry LeftEncoder = tab.add("Left Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry RightEncoder = tab.add("Right Encoder", 0).withWidget(BuiltInWidgets.kNumberBar)
             .getEntry();
@@ -64,18 +73,18 @@ public class Training extends SubsystemBase {
         rightMotor = new TitanQuad(Constants.TITAN_ID, 0);
         backMotor = new TitanQuad(Constants.TITAN_ID, 1);
 
-        //servoLift = new ServoContinuous(Constants.SERVO_LIFT);
-        //servoRGripper = new Servo(Constants.SERVO_GRIPPER_ROTATE);
-        //servoGripper = new Servo(Constants.SERVO_GRIPPER);
+        servoLift = new ServoContinuous(Constants.SERVO_LIFT);
+        servoRGripper = new Servo(Constants.SERVO_GRIPPER_ROTATE);
+        servoGripper = new Servo(Constants.SERVO_GRIPPER_ROTATE);
 
         leftEncoder = new TitanQuadEncoder(leftMotor, 3, 0.429179324);
         rightEncoder = new TitanQuadEncoder(rightMotor, 0, 0.429179324);
         backEncoder = new TitanQuadEncoder(backMotor, 1, 0.429179324);
 
         // Sensors
-        //cobra = new Cobra();
-        //sharp = new AnalogInput(Constants.SHARP);
-        //sonic = new Ultrasonic(Constants.SONIC_TRIGG, Constants.SONIC_ECHO);
+        cobra = new Cobra();
+        sharp = new AnalogInput(Constants.SHARP);
+        sonic = new Ultrasonic(Constants.SONIC_TRIGG, Constants.SONIC_ECHO);
         gyro = new AHRS(SPI.Port.kMXP);
     }
     public int getCobraRawValue(int channel) {
@@ -91,7 +100,6 @@ public class Training extends SubsystemBase {
         }
         return false;
     }
-
     public double getIRDistance() {
         return (Math.pow(sharp.getAverageVoltage(), -1.2045) * 27.726);
     }

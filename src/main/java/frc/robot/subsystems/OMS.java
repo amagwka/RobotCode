@@ -35,7 +35,7 @@ public class OMS extends SubsystemBase {
     private NetworkTableEntry gripperValue = tab.add("gripper", 0).withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", 0, "max", 300)).getEntry();
 
-    private NetworkTableEntry R_gripperValue = tab.add("R_gripper", 0).withWidget(BuiltInWidgets.kNumberSlider)
+    private NetworkTableEntry R_gripperValue = tab.add("R_gripper", 150).withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", 0, "max", 300)).getEntry();
 
     private NetworkTableEntry liftValue = tab.add("lift", 0).withWidget(BuiltInWidgets.kNumberSlider)
@@ -66,7 +66,7 @@ public class OMS extends SubsystemBase {
     }
 
     public void setR_gripperPosition(double degrees) {
-        gripper.setAngle(degrees);
+        R_gripper.setAngle(degrees);
     }
 
     public void setLiftSpeed(double speed) {

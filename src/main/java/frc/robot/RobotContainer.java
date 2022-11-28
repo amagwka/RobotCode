@@ -25,8 +25,7 @@ public class RobotContainer {
   public static OI oi;
   public static OMS oms;
 
-  public RobotContainer()
-  {
+  public RobotContainer(){
       //Create new instances
       //autonomousCommand = new Autonomous(-1000,1,-80,0.1);
       //drive=new Drive();

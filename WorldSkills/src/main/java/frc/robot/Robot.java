@@ -1,5 +1,4 @@
 package frc.robot;
-
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
@@ -10,7 +9,10 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Drive;
+import frc.robot.commands.ForwardEncoder;
+  
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
@@ -21,20 +23,18 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    
   }
 
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
   }
 
   @Override
   public void disabledInit() {
-    new Thread(()->{
+    /*new Thread(()->{
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
       camera.setResolution(640, 480);
       camera.setFPS(30);
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
         Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
         outputStream.putFrame(output);
       }
-    }).start();
+    }).start();*/
   }
 
   @Override
@@ -60,12 +60,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+    CommandScheduler.getInstance()
+    .schedule(new SequentialCommandGroup(
+            new ForwardEncoder(100, 1,true)));
   }
 
   @Override
@@ -74,10 +71,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
+    CommandScheduler.getInstance().schedule(new Drive());
+    
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
