@@ -19,10 +19,6 @@ public class OI
             else  
                 return joy;
         }
-
-        /**
-         * @return the x-axis value from the drivePad right Joystick
-         */
         public double getRightDriveX(){
             double joy = drivePad.getRawAxis(GamepadConstants.RIGHT_ANALOG_X);
             if(Math.abs(joy) < 0.05)
@@ -44,60 +40,45 @@ public class OI
             else
                 return joy;
         }
-
-        /**
-         * @return a true or false depending on the input
-         */
-        public boolean getDriveRightBumper()
-        {
-            return drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER);
+        
+        public double getDriveRightBumper(){
+            return drivePad.getRawAxis(GamepadConstants.RIGHT_BUMPER);
         }
-
-        /**
-         * @return a true or false depending on the input
-         */
-        public double getDriveLeftBumper()
-        {
-            return drivePad.getRawAxis(5);
+        public double getDriveLeftBumper(){
+            return drivePad.getRawAxis(GamepadConstants.LEFT_BUMPER);
         }
-
-        /**
-         * @return a true or false depending on the input
-         */
-        public boolean getDriveAButton()
-        {
+        
+        public boolean getDriveAButton(){
             return drivePad.getRawButton(GamepadConstants.A_BUTTON);
         }
-
-        /**
-         * @return a true or false depending on the input
-         */
-        public boolean getDriveBackButton()
-        {
-            return drivePad.getRawButton(GamepadConstants.BACK_BUTTON);
+        public boolean getDriveBButton(){
+            return drivePad.getRawButton(GamepadConstants.B_BUTTON);
+        }
+        public boolean getDriveXButton(){
+            return drivePad.getRawButton(GamepadConstants.X_BUTTON);
+        }
+        public boolean getDriveYButton(){
+            return drivePad.getRawButton(GamepadConstants.Y_BUTTON);
         }
 
-        /**
-         * @return a true or false depending on the input
-         */
-        public boolean getDriveStartButton()
-        {
+        public boolean getDriveBackButton(){
+            return drivePad.getRawButton(GamepadConstants.BACK_BUTTON);
+        }
+        public boolean getDriveStartButton(){
             return drivePad.getRawButton(GamepadConstants.START_BUTTON);
         }
 
-        /**
-         * @return a true or false depending on the input
-         */
-        public boolean getDriveRightAnalogButton()
-        {
+        public boolean getDriveRightAnalogButton(){
             return drivePad.getRawButton(GamepadConstants.RIGHT_ANALOG_BUTTON);
         }
-
-        /**
-         * @return a true or false depending on the input
-         */
-        public boolean getDriveLeftAnalogButton()
-        {
+        public boolean getDriveLeftAnalogButton(){
             return drivePad.getRawButton(GamepadConstants.LEFT_ANALOG_BUTTON);
         }
-}   
+
+public boolean getDriveRightR1Button(){
+    return drivePad.getRawButton(GamepadConstants.RT);
+}
+public boolean getDriveLeftL1Button(){
+    return drivePad.getRawButton(GamepadConstants.LT);
+}
+}

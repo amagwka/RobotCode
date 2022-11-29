@@ -54,8 +54,8 @@ public class Training extends SubsystemBase {
     private NetworkTableEntry BackEncoder = tab.add("Back Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
 
     private NetworkTableEntry LeftMotor = tab.add("Left Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
-    private NetworkTableEntry RightMotor = tab.add("Right Encoder", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    private NetworkTableEntry BackMotor = tab.add("Back Encoder", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    private NetworkTableEntry RightMotor = tab.add("Right Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    private NetworkTableEntry BackMotor = tab.add("Back Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     
     private NetworkTableEntry ForwardForce = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry navX = tab.add("NavX Yaw", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
@@ -140,7 +140,7 @@ public class Training extends SubsystemBase {
         return rightEncoder.getEncoderDistance() * -1;
     }
     public double getAverageForwardEncoderDistance() {
-        return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
+        return (getLeftEncoderDistance() + getRightEncoderDistance()) * Math.cos(Math.toRadians(30));
     }
     public double getBackEncoderDistance() {
         return backEncoder.getEncoderDistance();
@@ -184,6 +184,9 @@ public class Training extends SubsystemBase {
             // ultraSonic.setDouble(getSonicDistance(true));
             // cobraRaw.setDouble(getCobraRawValue(0)); //Just going to use channel 0 for
             // cobraVoltage.setDouble(getCobraVoltage(0));
+            setLeftMotorSpeed(LeftMotor.getDouble(0));
+            setRightMotorSpeed(RightMotor.getDouble(0));
+            setBackMotorSpeed(BackMotor.getDouble(0));
             LeftEncoder.setDouble(getLeftEncoderDistance());
             RightEncoder.setDouble(getRightEncoderDistance());
             BackEncoder.setDouble(getBackEncoderDistance());

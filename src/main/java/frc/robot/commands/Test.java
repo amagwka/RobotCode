@@ -12,7 +12,7 @@ import frc.robot.gamepad.OI;
 import frc.robot.subsystems.OMS;
 import frc.robot.subsystems.Training;
 
-public class Drive extends CommandBase
+public class Test extends CommandBase
 {
     /**
      * Bring in Subsystem and Gamepad code
@@ -40,9 +40,7 @@ public class Drive extends CommandBase
     boolean inputXButton = false;
     boolean inputYButton = false;
     
-    /**
-     * Ramp Constants
-     */
+    
     double deltaLeftY = 0;
     double deltaLeftX = 0;
     double deltaRightY = 0;
@@ -52,43 +50,26 @@ public class Drive extends CommandBase
     double prevRightY = 0;
     double prevRightX = 0;
     double[] motors = new double[] { 0, 0, 0 };
-    /**
-     * Ramp up Constant
-     */
+    
+
     private static final double RAMP_UP     = 0.05;
+    
 
-    /**
-     * Ramp down Constant
-     */
     private static final double RAMP_DOWN   = 0.05;
+    
 
-    /**
-     * Delta Limit
-     */
     private static final double DELTA_LIMIT = 0.075;
+    
 
-    /**
-     * Constructor
-     */
-    public Drive(){
-        addRequirements(train,oms); //add the traning subsystem as a requirement 
+    public Test(){
+        addRequirements(train,oms);
     }
-
-    /**
-     * Code here will run once when the command is called for the first time
-     */
     @Override
     public void initialize(){
 
     }
-    /**
-     * Code here will run continously every robot loop until the command is stopped
-     */
     @Override
     public void execute(){
-        /**
-         * Ramp
-         */
         
         inputLeftX = oi.getLeftDriveX();
         inputLeftY = - oi.getLeftDriveY();
@@ -105,10 +86,8 @@ public class Drive extends CommandBase
 
         inputXButton = oi.getDriveXButton();
         inputYButton = oi.getDriveYButton();
+        
 
-        /**
-         * Ramp
-         */
         deltaLeftX = inputLeftX - prevLeftX;
         deltaLeftY = inputLeftY - prevLeftY;
         deltaRightY = inputRightY - prevRightY;
@@ -127,10 +106,8 @@ public class Drive extends CommandBase
         prevLeftY = inputLeftY;
         prevLeftX = inputLeftX;
         prevRightY = inputRightY;
+        
 
-        /**
-         * Control Motor
-         */
         //getMotorSpeeds(inputLeftX,inputLeftY,inputRightY);
         
         /*train.setMotor0Speed((-inputLeftX+inputRightY)/(inputLeftB+0.7));
@@ -142,20 +119,14 @@ public class Drive extends CommandBase
         train.setMotor1Speed(0.5 * inputLeftX + 0.866 * inputLeftY + inputRightY);
         train.setMotor2Speed(inputLeftX + inputRightY);*/
     }
+    
 
-    /**
-     * When the comamnd is stopped or interrupted this code is run
-     * <p>
-     * Good place to stop motors in case of an error
-     */
     @Override
     public void end(boolean interrupted){
         train.setDriveMotorSpeeds(0.,0.,0.);
     }
+    
 
-    /**
-     * Check to see if command is finished
-     */
     @Override
     public boolean isFinished(){
         return false;
