@@ -47,9 +47,9 @@ public class RotateEncoder extends CommandBase {
 
     @Override
     public void execute() {
-        for (int i = 0; i < 3; i++) {
+        //for (int i = 0; i < 3; i++) {
             train.holonomicDrive(0.0, 0.0, MathUtil.clamp(pidZAxis.calculate(train.getYaw(), setpointYaw), -0.2, 0.2));
-        }
+        //}
         /*
         train.setDriveMotorSpeeds(
                 MathUtil.clamp(pidLeftAxis.calculate(train.getRightEncoderDistance() + train.getBackEncoderDistance()

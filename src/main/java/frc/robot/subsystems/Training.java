@@ -50,11 +50,14 @@ public class Training extends SubsystemBase {
      */
     private ShuffleboardTab tab = Shuffleboard.getTab("Training");
     private NetworkTableEntry LeftEncoder = tab.add("Left Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    private NetworkTableEntry RightEncoder = tab.add("Right Encoder", 0).withWidget(BuiltInWidgets.kNumberBar)
-            .getEntry();
+    private NetworkTableEntry RightEncoder = tab.add("Right Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry BackEncoder = tab.add("Back Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    private NetworkTableEntry ForwardForce = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar)
-            .getEntry();
+
+    private NetworkTableEntry LeftMotor = tab.add("Left Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    private NetworkTableEntry RightMotor = tab.add("Right Encoder", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    private NetworkTableEntry BackMotor = tab.add("Back Encoder", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    
+    private NetworkTableEntry ForwardForce = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry navX = tab.add("NavX Yaw", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     OI oi;
     int x=0;
@@ -63,10 +66,6 @@ public class Training extends SubsystemBase {
         leftMotor = new TitanQuad(Constants.TITAN_ID, 3);
         rightMotor = new TitanQuad(Constants.TITAN_ID, 0);
         backMotor = new TitanQuad(Constants.TITAN_ID, 1);
-
-        //servoLift = new ServoContinuous(Constants.SERVO_LIFT);
-        //servoRGripper = new Servo(Constants.SERVO_GRIPPER_ROTATE);
-        //servoGripper = new Servo(Constants.SERVO_GRIPPER);
 
         leftEncoder = new TitanQuadEncoder(leftMotor, 3, 0.429179324);
         rightEncoder = new TitanQuadEncoder(rightMotor, 0, 0.429179324);
