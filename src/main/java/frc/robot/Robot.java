@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
@@ -22,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Drive;
 //import frc.robot.commands.ForwardEncoder;
 //import frc.robot.commands.RotateEncoder;
+import frc.robot.commands.Test;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -32,15 +32,14 @@ import frc.robot.commands.Drive;
 public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
+  Drive drive;
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer. 
     m_robotContainer = new RobotContainer();
+    drive = new Drive();
+
     new Thread(()->{
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
       camera.setResolution(640, 480);
@@ -88,7 +87,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    //CommandScheduler.getInstance().schedule(new Drive());
+    CommandScheduler.getInstance().schedule(drive);
   }
   @Override
   public void teleopPeriodic() {
@@ -96,7 +95,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-
     CommandScheduler.getInstance().cancelAll();
   }
   @Override

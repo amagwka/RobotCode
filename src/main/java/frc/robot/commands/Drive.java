@@ -1,8 +1,10 @@
 package frc.robot.commands;
 
+import java.io.Console;
 import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -39,10 +41,13 @@ public class Drive extends CommandBase
 
     boolean inputXButton = false;
     boolean inputYButton = false;
+
+    double gripperDegrees=0;
+    double R_LiftDegrees=0;
+    double LiftSpeed=0;
     
-    /**
-     * Ramp Constants
-     */
+    
+    
     double deltaLeftY = 0;
     double deltaLeftX = 0;
     double deltaRightY = 0;
@@ -67,6 +72,9 @@ public class Drive extends CommandBase
      */
     private static final double DELTA_LIMIT = 0.075;
 
+    private NetworkTableEntry LeftBumper = train.tab.add("Left Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    private NetworkTableEntry RightBumper = train.tab.add("Right Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+
     /**
      * Constructor
      */
@@ -79,17 +87,13 @@ public class Drive extends CommandBase
      */
     @Override
     public void initialize(){
-
+        //oi.getPadNumber();
     }
     /**
      * Code here will run continously every robot loop until the command is stopped
      */
     @Override
     public void execute(){
-        /**
-         * Ramp
-         */
-        
         inputLeftX = oi.getLeftDriveX();
         inputLeftY = - oi.getLeftDriveY();
         inputRightY = oi.getRightDriveY();
@@ -106,9 +110,9 @@ public class Drive extends CommandBase
         inputXButton = oi.getDriveXButton();
         inputYButton = oi.getDriveYButton();
 
-        /**
-         * Ramp
-         */
+        LeftBumper.setDouble(inputLeftBumper);
+        RightBumper.setDouble(inputRightBumper);
+        
         deltaLeftX = inputLeftX - prevLeftX;
         deltaLeftY = inputLeftY - prevLeftY;
         deltaRightY = inputRightY - prevRightY;
@@ -128,9 +132,9 @@ public class Drive extends CommandBase
         prevLeftX = inputLeftX;
         prevRightY = inputRightY;
 
-        /**
-         * Control Motor
-         */
+        
+
+        //oms.setGripperPosition();
         //getMotorSpeeds(inputLeftX,inputLeftY,inputRightY);
         
         /*train.setMotor0Speed((-inputLeftX+inputRightY)/(inputLeftB+0.7));

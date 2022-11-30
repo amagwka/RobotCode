@@ -48,7 +48,7 @@ public class Training extends SubsystemBase {
     /**
      * Shuffleboard
      */
-    private ShuffleboardTab tab = Shuffleboard.getTab("Training");
+    public ShuffleboardTab tab = Shuffleboard.getTab("Training");
     private NetworkTableEntry LeftEncoder = tab.add("Left Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry RightEncoder = tab.add("Right Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry BackEncoder = tab.add("Back Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
@@ -59,6 +59,7 @@ public class Training extends SubsystemBase {
     
     private NetworkTableEntry ForwardForce = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry navX = tab.add("NavX Yaw", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    
     OI oi;
     int x=0;
     public Training() {

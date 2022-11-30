@@ -46,6 +46,7 @@ public class OMS extends SubsystemBase {
 
     public OMS() {
         R_lift = new TitanQuad(Constants.TITAN_ID, Constants.MOTOR_ROTATE_LIFT);
+
         gripper = new Servo(Constants.SERVO_GRIPPER);
         lift = new ServoContinuous(Constants.SERVO_LIFT);
         R_gripper = new Servo(Constants.SERVO_GRIPPER_ROTATE);
