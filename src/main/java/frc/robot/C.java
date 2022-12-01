@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-public final class Constants
+public final class C
 {
     /**
      * Motor Constants
@@ -18,7 +18,7 @@ public final class Constants
     public static final int SERVO_LIFT               = 1;
     public static final int SERVO_GRIPPER_ROTATE     = 2;
 
-
+    public static final int OPEN_CUBE=1;
     /**
      * Sensors
      */

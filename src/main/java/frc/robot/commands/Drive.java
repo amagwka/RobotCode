@@ -42,9 +42,9 @@ public class Drive extends CommandBase
     boolean inputXButton = false;
     boolean inputYButton = false;
 
-    double gripperDegrees=0;
-    double R_LiftDegrees=0;
-    double LiftSpeed=0;
+    double gripperDegrees=150;
+    double r_LiftDegrees=0;
+    double liftSpeed=0;
     
     
     
@@ -72,8 +72,8 @@ public class Drive extends CommandBase
      */
     private static final double DELTA_LIMIT = 0.075;
 
-    private NetworkTableEntry LeftBumper = train.tab.add("Left Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    private NetworkTableEntry RightBumper = train.tab.add("Right Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    // private NetworkTableEntry LeftBumper = train.tab.add("Left Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    // private NetworkTableEntry RightBumper = train.tab.add("Right Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
 
     /**
      * Constructor
@@ -110,8 +110,8 @@ public class Drive extends CommandBase
         inputXButton = oi.getDriveXButton();
         inputYButton = oi.getDriveYButton();
 
-        LeftBumper.setDouble(inputLeftBumper);
-        RightBumper.setDouble(inputRightBumper);
+        //LeftBumper.setDouble(inputLeftBumper);
+        //RightBumper.setDouble(inputRightBumper);
         
         deltaLeftX = inputLeftX - prevLeftX;
         deltaLeftY = inputLeftY - prevLeftY;
@@ -133,8 +133,18 @@ public class Drive extends CommandBase
         prevRightY = inputRightY;
 
         
+        gripperDegrees+= (-inputLeftBumper-1)*10 + (inputRightBumper+1)*10;
 
-        //oms.setGripperPosition();
+        if(gripperDegrees>300)gripperDegrees=300;
+        if(gripperDegrees<0)gripperDegrees=0;
+        if(r_LiftDegrees>300)r_LiftDegrees=300;
+        if(r_LiftDegrees<0)r_LiftDegrees=0;
+        if(liftSpeed<0.0)liftSpeed=0;
+        if(liftSpeed>1.0)liftSpeed=1;
+
+
+        oms.setGripperPosition(gripperDegrees);
+        oms.setR_liftMotorSpeed();
         //getMotorSpeeds(inputLeftX,inputLeftY,inputRightY);
         
         /*train.setMotor0Speed((-inputLeftX+inputRightY)/(inputLeftB+0.7));

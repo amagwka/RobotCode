@@ -23,7 +23,7 @@ public class Drive extends CommandBase
     double inputLeftB = 0;
     
     /**
-     * Ramp Constants
+     * Ramp C
      */
     double deltaLeftY = 0;
     double deltaLeftX = 0;

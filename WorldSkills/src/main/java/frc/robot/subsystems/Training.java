@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.C;
 import frc.robot.gamepad.OI;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -69,13 +69,13 @@ public class Training extends SubsystemBase {
     int x=0;
     public Training() {
         oi = new OI();
-        leftMotor = new TitanQuad(Constants.TITAN_ID, 3);
-        rightMotor = new TitanQuad(Constants.TITAN_ID, 0);
-        backMotor = new TitanQuad(Constants.TITAN_ID, 1);
+        leftMotor = new TitanQuad(C.TITAN_ID, 3);
+        rightMotor = new TitanQuad(C.TITAN_ID, 0);
+        backMotor = new TitanQuad(C.TITAN_ID, 1);
 
-        servoLift = new ServoContinuous(Constants.SERVO_LIFT);
-        servoRGripper = new Servo(Constants.SERVO_GRIPPER_ROTATE);
-        servoGripper = new Servo(Constants.SERVO_GRIPPER_ROTATE);
+        servoLift = new ServoContinuous(C.SERVO_LIFT);
+        servoRGripper = new Servo(C.SERVO_GRIPPER_ROTATE);
+        servoGripper = new Servo(C.SERVO_GRIPPER_ROTATE);
 
         leftEncoder = new TitanQuadEncoder(leftMotor, 3, 0.429179324);
         rightEncoder = new TitanQuadEncoder(rightMotor, 0, 0.429179324);
@@ -83,8 +83,8 @@ public class Training extends SubsystemBase {
 
         // Sensors
         cobra = new Cobra();
-        sharp = new AnalogInput(Constants.SHARP);
-        sonic = new Ultrasonic(Constants.SONIC_TRIGG, Constants.SONIC_ECHO);
+        sharp = new AnalogInput(C.SHARP);
+        sonic = new Ultrasonic(C.SONIC_TRIGG, C.SONIC_ECHO);
         gyro = new AHRS(SPI.Port.kMXP);
     }
     public int getCobraRawValue(int channel) {

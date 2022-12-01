@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.C;
 
 public class OMS extends SubsystemBase {
     /**
@@ -45,15 +45,15 @@ public class OMS extends SubsystemBase {
     .withProperties(Map.of("min", -1, "max", 1)).getEntry();
 
     public OMS() {
-        R_lift = new TitanQuad(Constants.TITAN_ID, Constants.MOTOR_ROTATE_LIFT);
+        R_lift = new TitanQuad(C.TITAN_ID, C.MOTOR_ROTATE_LIFT);
 
-        gripper = new Servo(Constants.SERVO_GRIPPER);
-        lift = new ServoContinuous(Constants.SERVO_LIFT);
-        R_gripper = new Servo(Constants.SERVO_GRIPPER_ROTATE);
+        gripper = new Servo(C.SERVO_GRIPPER);
+        lift = new ServoContinuous(C.SERVO_LIFT);
+        R_gripper = new Servo(C.SERVO_GRIPPER_ROTATE);
         
         
         
-        R_liftEncoder = new TitanQuadEncoder(R_lift, Constants.MOTOR_ROTATE_LIFT, 0.42917932426);
+        R_liftEncoder = new TitanQuadEncoder(R_lift, C.MOTOR_ROTATE_LIFT, 0.429179);
     }
 
     public void setR_liftMotorSpeed(double speed) {
@@ -87,5 +87,7 @@ public class OMS extends SubsystemBase {
         setGripperPosition(gripperValue.getDouble(0.0));
         setLiftSpeed(liftValue.getDouble(0.0));
         setR_gripperPosition(R_gripperValue.getDouble(0.0));
+
+        setR_liftMotorSpeed(R_liftValue.getDouble(0.0));
     }
 }

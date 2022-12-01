@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-public final class Constants
+public final class C
 {
 
     /**
@@ -16,7 +16,7 @@ public final class Constants
     public static final int TITAN_ID                    = 42;
 
     /**
-     * Drive Base Constants
+     * Drive Base C
      */
         /**
          * Motors
@@ -45,7 +45,7 @@ public final class Constants
         public static final double WHEEL_DIST_PER_TICK  = (Math.PI * 2 * wheelRadius) / wheelPulseRatio;
 
     /**
-     * Elevator Constants
+     * Elevator C
      */
         /**
          * Motors

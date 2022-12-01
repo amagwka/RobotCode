@@ -8,7 +8,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.C;
 
 public class OMS extends SubsystemBase
 {
@@ -35,13 +35,13 @@ public class OMS extends SubsystemBase
         /**
          * Motors
          */
-        elevator = new TitanQuad(Constants.TITAN_ID, Constants.M2);
-        claw = new Servo(Constants.DIF_SERVO);
+        elevator = new TitanQuad(C.TITAN_ID, C.M2);
+        claw = new Servo(C.DIF_SERVO);
 
         /**
          * Sensors
          */
-        elevatorEncoder = new TitanQuadEncoder(elevator, Constants.M2, Constants.ELEVATOR_DIST_TICK);
+        elevatorEncoder = new TitanQuadEncoder(elevator, C.M2, C.ELEVATOR_DIST_TICK);
     }
 
     /**

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.C;
 
 public class DriveTrain extends SubsystemBase
 {
@@ -51,16 +51,16 @@ public class DriveTrain extends SubsystemBase
         /**
          * Motors
          */
-        leftMotor = new TitanQuad(Constants.TITAN_ID, Constants.M3);
-        rightMotor = new TitanQuad(Constants.TITAN_ID, Constants.M0);
-        backMotor = new TitanQuad(Constants.TITAN_ID, Constants.M1);
+        leftMotor = new TitanQuad(C.TITAN_ID, C.M3);
+        rightMotor = new TitanQuad(C.TITAN_ID, C.M0);
+        backMotor = new TitanQuad(C.TITAN_ID, C.M1);
 
         /**
          * Encoders
          */
-        leftEncoder = new TitanQuadEncoder(leftMotor, Constants.M3, Constants.WHEEL_DIST_PER_TICK);
-        rightEncoder = new TitanQuadEncoder(rightMotor, Constants.M0, Constants.WHEEL_DIST_PER_TICK);
-        backEncoder = new TitanQuadEncoder(backMotor, Constants.M1, Constants.WHEEL_DIST_PER_TICK);
+        leftEncoder = new TitanQuadEncoder(leftMotor, C.M3, C.WHEEL_DIST_PER_TICK);
+        rightEncoder = new TitanQuadEncoder(rightMotor, C.M0, C.WHEEL_DIST_PER_TICK);
+        backEncoder = new TitanQuadEncoder(backMotor, C.M1, C.WHEEL_DIST_PER_TICK);
 
         /**
          * Sensors

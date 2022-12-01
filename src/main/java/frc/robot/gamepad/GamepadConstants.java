@@ -11,7 +11,7 @@ public class GamepadConstants{
     public static final int B_BUTTON            = 1;
     public static final int A_BUTTON            = 0;
 
-    public static final int LEFT_BUMPER         = 4;
+    public static final int LEFT_BUMPER         = 2;
     public static final int RIGHT_BUMPER        = 5;
 
     public static final int BACK_BUTTON        = 6;
@@ -23,7 +23,7 @@ public class GamepadConstants{
     //Joystick
     public static final int LEFT_ANALOG_X       = 0;
     public static final int LEFT_ANALOG_Y       = 1;
-    public static final int RIGHT_ANALOG_X      = 2;
+    public static final int RIGHT_ANALOG_X      = 4;
     public static final int RIGHT_ANALOG_Y      = 3;
 
     //DPAD
