@@ -93,7 +93,6 @@ public class OI
         public boolean getDriveLeftAnalogButton(){
             return drivePad.getRawButton(GamepadConstants.LEFT_ANALOG_BUTTON);
         }
-
 public boolean getDriveRightR1Button(){
     return drivePad.getRawButton(GamepadConstants.RT);
 }

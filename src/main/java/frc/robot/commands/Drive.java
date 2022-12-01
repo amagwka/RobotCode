@@ -4,7 +4,6 @@ import java.io.Console;
 import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -72,8 +71,7 @@ public class Drive extends CommandBase
      */
     private static final double DELTA_LIMIT = 0.075;
 
-    // private NetworkTableEntry LeftBumper = train.tab.add("Left Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    // private NetworkTableEntry RightBumper = train.tab.add("Right Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    //private NetworkTableEntry RightBumper = train.tab.add("Right Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
 
     /**
      * Constructor
@@ -110,7 +108,6 @@ public class Drive extends CommandBase
         inputXButton = oi.getDriveXButton();
         inputYButton = oi.getDriveYButton();
 
-        //LeftBumper.setDouble(inputLeftBumper);
         //RightBumper.setDouble(inputRightBumper);
         
         deltaLeftX = inputLeftX - prevLeftX;
@@ -144,7 +141,8 @@ public class Drive extends CommandBase
 
 
         oms.setGripperPosition(gripperDegrees);
-        oms.setR_liftMotorSpeed();
+        //oms.setLiftSpeed(speed);
+        //oms.setR_liftMotorSpeed();
         //getMotorSpeeds(inputLeftX,inputLeftY,inputRightY);
         
         /*train.setMotor0Speed((-inputLeftX+inputRightY)/(inputLeftB+0.7));

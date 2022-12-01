@@ -72,6 +72,8 @@ public class Training extends SubsystemBase {
         rightEncoder = new TitanQuadEncoder(rightMotor, 0, 0.429179324);
         backEncoder = new TitanQuadEncoder(backMotor, 1, 0.429179324);
 
+        
+
         // Sensors
         //cobra = new Cobra();
         //sharp = new AnalogInput(C.SHARP);

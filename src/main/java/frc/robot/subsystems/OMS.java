@@ -44,16 +44,18 @@ public class OMS extends SubsystemBase {
     private NetworkTableEntry R_liftValue = tab.add("Rotate_lift", 0).withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", -1, "max", 1)).getEntry();
 
+    private NetworkTableEntry LiftEncoder = tab.add("LiftEncoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+
+
     public OMS() {
         R_lift = new TitanQuad(C.TITAN_ID, C.MOTOR_ROTATE_LIFT);
-
         gripper = new Servo(C.SERVO_GRIPPER);
         lift = new ServoContinuous(C.SERVO_LIFT);
         R_gripper = new Servo(C.SERVO_GRIPPER_ROTATE);
         
         
         
-        R_liftEncoder = new TitanQuadEncoder(R_lift, C.MOTOR_ROTATE_LIFT, 0.429179);
+        R_liftEncoder = new TitanQuadEncoder(R_lift, C.MOTOR_ROTATE_LIFT, 1); //0.429179
     }
 
     public void setR_liftMotorSpeed(double speed) {
@@ -83,11 +85,13 @@ public class OMS extends SubsystemBase {
 
     @Override
     public void periodic() {
+        /*
         R_liftEncoderValue.setDouble(getR_liftEncoderDistance());
         setGripperPosition(gripperValue.getDouble(0.0));
         setLiftSpeed(liftValue.getDouble(0.0));
         setR_gripperPosition(R_gripperValue.getDouble(0.0));
 
-        setR_liftMotorSpeed(R_liftValue.getDouble(0.0));
+        setR_liftMotorSpeed(R_liftValue.getDouble(0.0));*/
+        LiftEncoder.setDouble(getR_liftEncoderDistance());
     }
 }
