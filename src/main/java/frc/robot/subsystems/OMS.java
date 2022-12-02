@@ -32,6 +32,7 @@ public class OMS extends SubsystemBase {
     private ShuffleboardTab tab = Shuffleboard.getTab("OMS");
     private NetworkTableEntry R_liftEncoderValue = tab.add("Rotate_lift Encoder", 0).getEntry();
 
+    /*
     private NetworkTableEntry gripperValue = tab.add("gripper", 150).withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", 0, "max", 300)).getEntry();
 
@@ -43,7 +44,7 @@ public class OMS extends SubsystemBase {
 
     private NetworkTableEntry R_liftValue = tab.add("Rotate_lift", 0).withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", -1, "max", 1)).getEntry();
-
+*/
     private NetworkTableEntry LiftEncoder = tab.add("LiftEncoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
 
 

@@ -13,15 +13,14 @@ import frc.robot.gamepad.OI;
 import frc.robot.subsystems.OMS;
 import frc.robot.subsystems.Training;
 
-public class Drive extends CommandBase
-{
+public class Drive extends CommandBase {
     /**
      * Bring in Subsystem and Gamepad code
      */
     private static final Training train = RobotContainer.train;
     private static final OMS oms = RobotContainer.oms;
     private static final OI oi = RobotContainer.oi;
-    
+
     /**
      * Joystick inputs
      */
@@ -41,12 +40,11 @@ public class Drive extends CommandBase
     boolean inputXButton = false;
     boolean inputYButton = false;
 
-    double gripperDegrees=150;
-    double r_LiftDegrees=0;
-    double liftSpeed=0;
-    
-    
-    
+    double r_gripperDegrees = 150;
+    double gripperDegrees = 150;
+    double r_LiftSpeed = 0;
+    double liftSpeed = 0;
+
     double deltaLeftY = 0;
     double deltaLeftX = 0;
     double deltaRightY = 0;
@@ -59,41 +57,47 @@ public class Drive extends CommandBase
     /**
      * Ramp up Constant
      */
-    private static final double RAMP_UP     = 0.05;
+    private static final double RAMP_UP = 0.05;
 
     /**
      * Ramp down Constant
      */
-    private static final double RAMP_DOWN   = 0.05;
+    private static final double RAMP_DOWN = 0.05;
 
     /**
      * Delta Limit
      */
     private static final double DELTA_LIMIT = 0.075;
 
-    //private NetworkTableEntry RightBumper = train.tab.add("Right Bumper", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    // private NetworkTableEntry RightBumper = train.tab.add("Right Bumper",
+    // 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
 
     /**
      * Constructor
      */
-    public Drive(){
-        addRequirements(train,oms); //add the traning subsystem as a requirement 
+    public Drive() {
+        addRequirements(train, oms); // add the traning subsystem as a requirement
+    }
+
+    public double toInt(boolean b) {
+        return b ? 1.0 : 0.0;
     }
 
     /**
      * Code here will run once when the command is called for the first time
      */
     @Override
-    public void initialize(){
-        //oi.getPadNumber();
+    public void initialize() {
+        // oi.getPadNumber();
     }
+
     /**
      * Code here will run continously every robot loop until the command is stopped
      */
     @Override
-    public void execute(){
+    public void execute() {
         inputLeftX = oi.getLeftDriveX();
-        inputLeftY = - oi.getLeftDriveY();
+        inputLeftY = -oi.getLeftDriveY();
         inputRightY = oi.getRightDriveY();
 
         inputLeftBumper = oi.getDriveLeftBumper();
@@ -108,20 +112,20 @@ public class Drive extends CommandBase
         inputXButton = oi.getDriveXButton();
         inputYButton = oi.getDriveYButton();
 
-        //RightBumper.setDouble(inputRightBumper);
-        
+        // RightBumper.setDouble(inputRightBumper);
+
         deltaLeftX = inputLeftX - prevLeftX;
         deltaLeftY = inputLeftY - prevLeftY;
         deltaRightY = inputRightY - prevRightY;
-        if(deltaLeftX >= DELTA_LIMIT)
+        if (deltaLeftX >= DELTA_LIMIT)
             inputLeftX += RAMP_UP;
         else if (deltaLeftX <= -DELTA_LIMIT)
             inputLeftX -= RAMP_DOWN;
-        if(deltaLeftY >= DELTA_LIMIT)
+        if (deltaLeftY >= DELTA_LIMIT)
             inputLeftY += RAMP_UP;
         else if (deltaLeftY <= -DELTA_LIMIT)
             inputLeftY -= RAMP_DOWN;
-        if(deltaRightY >= DELTA_LIMIT)
+        if (deltaRightY >= DELTA_LIMIT)
             inputRightY += RAMP_UP;
         else if (deltaRightY <= -DELTA_LIMIT)
             inputRightY -= RAMP_DOWN;
@@ -129,47 +133,59 @@ public class Drive extends CommandBase
         prevLeftX = inputLeftX;
         prevRightY = inputRightY;
 
-        
-        gripperDegrees+= (-inputLeftBumper-1)*10 + (inputRightBumper+1)*10;
+        gripperDegrees += (-inputLeftBumper - 1) * 3 + (inputRightBumper + 1) * 3;
+        r_gripperDegrees += -toInt(inputXButton)*0.5 + toInt(inputBButton) *0.5;
+        //r_gripperDegrees += -toInt(inputLeftLTButton) + (toInt(inputRightRTButton) );
+        liftSpeed += -toInt(inputYButton) * 0.7 + toInt(inputAButton) * 0.7;
+        r_LiftSpeed += -toInt(inputLeftLTButton) + toInt(inputRightRTButton);
 
-        if(gripperDegrees>300)gripperDegrees=300;
-        if(gripperDegrees<0)gripperDegrees=0;
-        if(r_LiftDegrees>300)r_LiftDegrees=300;
-        if(r_LiftDegrees<0)r_LiftDegrees=0;
-        if(liftSpeed<0.0)liftSpeed=0;
-        if(liftSpeed>1.0)liftSpeed=1;
+        if (gripperDegrees > 300)
+            gripperDegrees = 300;
+        if (gripperDegrees < 0)
+            gripperDegrees = 0;
+        if (r_gripperDegrees > 290)
+            r_gripperDegrees = 290;
+        if (r_gripperDegrees < 20)
+            r_gripperDegrees = 20;
+        if (r_LiftSpeed < -1.0)
+            r_LiftSpeed = -1;
+        if (r_LiftSpeed > 1.0)
+            r_LiftSpeed = 1;
+        if (liftSpeed < -1.0)
+            liftSpeed = -1;
+        if (liftSpeed > 1.0)
+            liftSpeed = 1;
 
-
+        liftSpeed /= 3;
+        r_LiftSpeed /= 3;
         oms.setGripperPosition(gripperDegrees);
-        //oms.setLiftSpeed(speed);
-        //oms.setR_liftMotorSpeed();
-        //getMotorSpeeds(inputLeftX,inputLeftY,inputRightY);
-        
-        /*train.setMotor0Speed((-inputLeftX+inputRightY)/(inputLeftB+0.7));
-        train.setMotor1Speed(((0.5*inputLeftX)-(1.2247448714*inputLeftY)+inputRightY)/(inputLeftB+1));
-        train.setMotor2Speed(((0.5*inputLeftX)+(1.2247448714*inputLeftY)+inputRightY)/(inputLeftB+0.7));*/
+        oms.setR_gripperPosition(r_gripperDegrees);
+        oms.setLiftSpeed(liftSpeed);
+        oms.setR_liftMotorSpeed(r_LiftSpeed);
+        // getMotorSpeeds(inputLeftX,inputLeftY,inputRightY);
+
+        /*
+         * train.setMotor0Speed((-inputLeftX+inputRightY)/(inputLeftB+0.7));
+         * train.setMotor1Speed(((0.5*inputLeftX)-(1.2247448714*inputLeftY)+inputRightY)
+         * /(inputLeftB+1));
+         * train.setMotor2Speed(((0.5*inputLeftX)+(1.2247448714*inputLeftY)+inputRightY)
+         * /(inputLeftB+0.7));
+         */
         train.holonomicDrive(inputLeftX, inputLeftY, inputRightY);
         /*
-        train.setMotor0Speed(0.5 * inputLeftX - 0.866 * inputLeftY + inputRightY);
-        train.setMotor1Speed(0.5 * inputLeftX + 0.866 * inputLeftY + inputRightY);
-        train.setMotor2Speed(inputLeftX + inputRightY);*/
+         * train.setMotor0Speed(0.5 * inputLeftX - 0.866 * inputLeftY + inputRightY);
+         * train.setMotor1Speed(0.5 * inputLeftX + 0.866 * inputLeftY + inputRightY);
+         * train.setMotor2Speed(inputLeftX + inputRightY);
+         */
     }
 
-    /**
-     * When the comamnd is stopped or interrupted this code is run
-     * <p>
-     * Good place to stop motors in case of an error
-     */
     @Override
-    public void end(boolean interrupted){
-        train.setDriveMotorSpeeds(0.,0.,0.);
+    public void end(boolean interrupted) {
+        train.setDriveMotorSpeeds(0., 0., 0.);
     }
 
-    /**
-     * Check to see if command is finished
-     */
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return false;
     }
 }

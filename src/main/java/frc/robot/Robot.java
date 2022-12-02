@@ -46,16 +46,16 @@ public class Robot extends TimedRobot {
       camera.setFPS(30);
 
       CvSink cvSink = CameraServer.getInstance().getVideo();
-      CvSource outputStream = CameraServer.getInstance().putVideo("GrayScale", 640, 480);
+      //CvSource outputStream = CameraServer.getInstance().putVideo("GrayScale", 640, 480);
 
       Mat source = new Mat();
-      Mat output = new Mat();
+      //Mat output = new Mat();
 
       while(!Thread.interrupted()){
         if(cvSink.grabFrame(source) == 0)
           continue;
-        Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-        outputStream.putFrame(output);
+        //Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+        //outputStream.putFrame(output);
       }
     }).start();
   }
