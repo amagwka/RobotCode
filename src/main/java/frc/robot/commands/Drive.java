@@ -137,16 +137,16 @@ public class Drive extends CommandBase {
         r_gripperDegrees += -toInt(inputXButton)*0.5 + toInt(inputBButton) *0.5;
         //r_gripperDegrees += -toInt(inputLeftLTButton) + (toInt(inputRightRTButton) );
         liftSpeed += -toInt(inputYButton) * 0.7 + toInt(inputAButton) * 0.7;
-        r_LiftSpeed += -toInt(inputLeftLTButton) + toInt(inputRightRTButton);
+        r_LiftSpeed += -toInt(inputLeftLTButton)*0.2 + toInt(inputRightRTButton)*0.2;
 
         if (gripperDegrees > 300)
             gripperDegrees = 300;
         if (gripperDegrees < 0)
             gripperDegrees = 0;
-        if (r_gripperDegrees > 290)
-            r_gripperDegrees = 290;
-        if (r_gripperDegrees < 20)
-            r_gripperDegrees = 20;
+        if (r_gripperDegrees > 300)
+            r_gripperDegrees = 300;
+        if (r_gripperDegrees < 0)
+            r_gripperDegrees = 0;
         if (r_LiftSpeed < -1.0)
             r_LiftSpeed = -1;
         if (r_LiftSpeed > 1.0)
@@ -157,7 +157,7 @@ public class Drive extends CommandBase {
             liftSpeed = 1;
 
         liftSpeed /= 3;
-        r_LiftSpeed /= 3;
+        r_LiftSpeed /= 2;
         oms.setGripperPosition(gripperDegrees);
         oms.setR_gripperPosition(r_gripperDegrees);
         oms.setLiftSpeed(liftSpeed);

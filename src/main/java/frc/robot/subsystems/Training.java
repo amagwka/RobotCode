@@ -117,7 +117,6 @@ public class Training extends SubsystemBase {
     }
 
     public void holonomicDrive(double x, double y, double z) {
-        
         double rightSpeed = ((((x / 3) - (y / Math.sqrt(3))) * Math.sqrt(3)) + z) / 2;
         double leftSpeed = ((((x / 3) + (y / Math.sqrt(3))) * Math.sqrt(3)) + z) / 2;
         double backSpeed = ((-x) + z) / 2;

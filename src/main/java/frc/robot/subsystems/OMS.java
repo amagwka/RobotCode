@@ -2,11 +2,14 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
+import javax.lang.model.util.ElementScanner6;
+
 import com.studica.frc.Servo;
 import com.studica.frc.ServoContinuous;
 import com.studica.frc.TitanQuad;
 import com.studica.frc.TitanQuadEncoder;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -20,6 +23,8 @@ public class OMS extends SubsystemBase {
     private TitanQuad R_lift;
     private Servo gripper, R_gripper;
     private ServoContinuous lift;
+    private DigitalInput upLimit;
+    private DigitalInput downLimit;
 
     /**
      * Sensors
@@ -50,10 +55,12 @@ public class OMS extends SubsystemBase {
 
     public OMS() {
         R_lift = new TitanQuad(C.TITAN_ID, C.MOTOR_ROTATE_LIFT);
+
         gripper = new Servo(C.SERVO_GRIPPER);
         lift = new ServoContinuous(C.SERVO_LIFT);
         R_gripper = new Servo(C.SERVO_GRIPPER_ROTATE);
-        
+        downLimit = new DigitalInput(10);
+        upLimit = new DigitalInput(9);
         
         
         R_liftEncoder = new TitanQuadEncoder(R_lift, C.MOTOR_ROTATE_LIFT, 1); //0.429179
@@ -77,7 +84,13 @@ public class OMS extends SubsystemBase {
     }
 
     public void setLiftSpeed(double speed) {
-        lift.setSpeed(speed);
+        if (upLimit.get()) {
+            lift.setSpeed(Math.abs(speed));
+        } if (downLimit.get())
+            lift.setSpeed(-Math.abs(speed));
+        else {
+            lift.setSpeed(speed);
+        }
     }
 
     public void resetEncoders() {
@@ -93,6 +106,6 @@ public class OMS extends SubsystemBase {
         setR_gripperPosition(R_gripperValue.getDouble(0.0));
 
         setR_liftMotorSpeed(R_liftValue.getDouble(0.0));*/
-        LiftEncoder.setDouble(getR_liftEncoderDistance());
+        LiftEncoder.setDouble(downLimit.get() ? 1.0 : 0.0);
     }
 }
