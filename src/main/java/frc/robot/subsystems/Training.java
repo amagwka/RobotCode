@@ -180,6 +180,7 @@ public class Training extends SubsystemBase {
 
     @Override
     public void periodic() {
+        /*
         if (x % 6==0) {
             // setServoAngle();
             //setServoSpeed();
@@ -196,6 +197,6 @@ public class Training extends SubsystemBase {
             ForwardForce.setDouble(getAverageForwardEncoderDistance());
             navX.setDouble(getYaw());
         }
-        x++;
+        x++;*/
     }
 }

@@ -1,19 +1,12 @@
 package frc.robot.gamepad;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 //Import the joystick class
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.RobotContainer;
 
 public class OI
 {
     //Create the joystick
     Joystick drivePad;
-    ArrayList<Double> arr=new ArrayList<Double>();
     
     public OI(){
         drivePad = new Joystick(GamepadConstants.DRIVE_USB_PORT);

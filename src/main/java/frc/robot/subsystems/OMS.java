@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
+import java.util.Random;
 
 import javax.lang.model.util.ElementScanner6;
 
@@ -84,13 +85,14 @@ public class OMS extends SubsystemBase {
     }
 
     public void setLiftSpeed(double speed) {
-        if (upLimit.get()) {
+        /*if (upLimit.get()) {
             lift.setSpeed(Math.abs(speed));
         } if (downLimit.get())
             lift.setSpeed(-Math.abs(speed));
         else {
             lift.setSpeed(speed);
-        }
+        }*/
+        lift.setSpeed(speed);
     }
 
     public void resetEncoders() {
@@ -106,6 +108,7 @@ public class OMS extends SubsystemBase {
         setR_gripperPosition(R_gripperValue.getDouble(0.0));
 
         setR_liftMotorSpeed(R_liftValue.getDouble(0.0));*/
-        LiftEncoder.setDouble(downLimit.get() ? 1.0 : 0.0);
+        //Random r=new Random();
+        //LiftEncoder.setDouble(r.nextDouble());
     }
 }
