@@ -23,6 +23,7 @@ public class ForwardEncoder extends CommandBase {
 
     @Override
     public void initialize() {
+        
     }
 
     @Override
