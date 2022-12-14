@@ -1,17 +1,10 @@
 package frc.robot.subsystems;
 
-import java.util.Map;
-import java.util.Random;
-
-import javax.lang.model.util.ElementScanner6;
-
 import com.studica.frc.Servo;
 import com.studica.frc.ServoContinuous;
 import com.studica.frc.TitanQuad;
 import com.studica.frc.TitanQuadEncoder;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,6 +29,7 @@ public class OMS extends SubsystemBase {
      * Shuffleboard
      */
     private ShuffleboardTab tab = Shuffleboard.getTab("OMS");
+    /*
     private NetworkTableEntry R_liftEncoderValue = tab.add("Rotate_lift Encoder", 0).getEntry();
 
     private NetworkTableEntry gripperValue = tab.add("gripper", 150).withWidget(BuiltInWidgets.kNumberSlider)
@@ -50,7 +44,7 @@ public class OMS extends SubsystemBase {
     private NetworkTableEntry R_liftValue = tab.add("Rotate_lift", 0).withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", -1, "max", 1)).getEntry();
 
-    private NetworkTableEntry LiftEncoder = tab.add("LiftEncoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    private NetworkTableEntry LiftEncoder = tab.add("LiftEncoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();*/
 
 
     public OMS() {
@@ -99,13 +93,13 @@ public class OMS extends SubsystemBase {
 
     @Override
     public void periodic() {
-        
+        /*
         R_liftEncoderValue.setDouble(getR_liftEncoderDistance());
         setGripperPosition(gripperValue.getDouble(0.0));
         setLiftSpeed(liftValue.getDouble(0.0));
         setR_gripperPosition(R_gripperValue.getDouble(0.0));
 
-        setR_liftMotorSpeed(R_liftValue.getDouble(0.0));
+        setR_liftMotorSpeed(R_liftValue.getDouble(0.0));*/
         //Random r=new Random();
         //LiftEncoder.setDouble(r.nextDouble());
     }

@@ -17,10 +17,10 @@ public class RotateEncoder extends CommandBase {
 
     double[] motors = new double[] { 0, 0, 0 };
 
-    public RotateEncoder(double setpointYaw, double epsilonYaw, boolean enablePIDForEachMotor,boolean delta) {
-        this.setpointYaw = setpointYaw;
+    public RotateEncoder(double setpointYawArg, double epsilonYaw, boolean enablePIDForEachMotor,boolean delta) {
+        setpointYaw = setpointYawArg;
         addRequirements(train);
-
+        /*
         pidLeftAxis = new PIDController(0.2, 0., 0.);
         pidLeftAxis.setTolerance(1);
 
@@ -29,26 +29,26 @@ public class RotateEncoder extends CommandBase {
 
         pidBackAxis = new PIDController(0.2, 0., 0.);
         pidBackAxis.setTolerance(1);
-
-        pidZAxis = new PIDController(1., 0.5, 1.);
+        */
+        pidZAxis = new PIDController(0.1, 0.0, 0.00);
         pidZAxis.setTolerance(epsilonYaw);
     }
 
     @Override
     public void initialize() {
-        motors[0] = (train.getRightEncoderDistance() + train.getBackEncoderDistance())
+        /*motors[0] = (train.getRightEncoderDistance() + train.getBackEncoderDistance())
                 - (train.getLeftEncoderDistance() * 2);
         motors[1] = (train.getLeftEncoderDistance() + train.getBackEncoderDistance())
                 - (train.getRightEncoderDistance() * 2);
         motors[2] = (train.getLeftEncoderDistance() + train.getRightEncoderDistance())
-                - (train.getBackEncoderDistance() * 2);
-        setpointYaw = (train.getYaw()+setpointYaw) % 360;
+                - (train.getBackEncoderDistance() * 2);*/
+        setpointYaw = train.getAngle()+setpointYaw;
     }
 
     @Override
     public void execute() {
         //for (int i = 0; i < 3; i++) {
-            train.holonomicDrive(0.0, 0.0, MathUtil.clamp(pidZAxis.calculate(train.getYaw(), setpointYaw), -0.5, 0.5));
+            train.holonomicDrive(0.0, 0.0, MathUtil.clamp(pidZAxis.calculate(train.getAngle(), setpointYaw), -1.0, 1.0));
         //}
         /*
         train.setDriveMotorSpeeds(
