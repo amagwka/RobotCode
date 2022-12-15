@@ -25,7 +25,7 @@ public class ForwardEncoder extends CommandBase {
     @Override
     public void initialize() {
         setpointDistance = train.getAverageForwardEncoderDistance()+setpointDistanceArgument;
-    }
+        }
 
     @Override
     public void execute() {
