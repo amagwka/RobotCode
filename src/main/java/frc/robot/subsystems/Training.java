@@ -13,8 +13,9 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 
-//Java imports
 import java.util.Map;
+
+//Java imports
 
 //Vendor imports
 import com.kauailabs.navx.frc.AHRS;
@@ -49,14 +50,15 @@ public class Training extends SubsystemBase {
      * Shuffleboard
      */
     public ShuffleboardTab tab = Shuffleboard.getTab("Training");
+    
     private NetworkTableEntry LeftEncoder = tab.add("Left Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry RightEncoder = tab.add("Right Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry BackEncoder = tab.add("Back Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
 
-    private NetworkTableEntry LeftMotor = tab.add("Left Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    /*private NetworkTableEntry LeftMotor = tab.add("Left Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
     private NetworkTableEntry RightMotor = tab.add("Right Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry BackMotor = tab.add("Back Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    
+    */
     private NetworkTableEntry ForwardForce = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     private NetworkTableEntry navX = tab.add("NavX Yaw", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     
@@ -108,6 +110,9 @@ public class Training extends SubsystemBase {
     public double getYaw() {
         return gyro.getYaw()+180;
     }
+    public double getAngle() {
+        return gyro.getAngle();
+    }
 
     public double getRoll() {
         return gyro.getRoll()+180;
@@ -117,9 +122,9 @@ public class Training extends SubsystemBase {
     }
 
     public void holonomicDrive(double x, double y, double z) {
-        double rightSpeed = ((((x / 3) - (y / Math.sqrt(3))) * Math.sqrt(3)) + z) / 2;
-        double leftSpeed = ((((x / 3) + (y / Math.sqrt(3))) * Math.sqrt(3)) + z) / 2;
-        double backSpeed = ((-x) + z) / 2;
+        double rightSpeed = ((((x / 3) - (y / Math.sqrt(3))) * Math.sqrt(3)) + z) / 1.5;
+        double leftSpeed = ((((x / 3) + (y / Math.sqrt(3))) * Math.sqrt(3)) + z) / 1.5;
+        double backSpeed = ((-x) + z) / 1.5;
         /*
          * double max = Math.abs(rightSpeed); if (Math.abs(leftSpeed) > max) max =
          * Math.abs(leftSpeed); if (Math.abs(backSpeed) > max) max =
@@ -149,6 +154,15 @@ public class Training extends SubsystemBase {
         return backEncoder.getEncoderDistance();
     }
 
+    public void resetLeftEncoder() {
+        leftEncoder.reset();
+    }
+    public void resetRightEncoder() {
+        rightEncoder.reset();
+    }
+    public void resetBackEncoder() {
+        backEncoder.reset();
+    }
 
 
     /*public void setServoAngle() {
@@ -180,7 +194,6 @@ public class Training extends SubsystemBase {
 
     @Override
     public void periodic() {
-        /*
         if (x % 6==0) {
             // setServoAngle();
             //setServoSpeed();
@@ -188,15 +201,15 @@ public class Training extends SubsystemBase {
             // ultraSonic.setDouble(getSonicDistance(true));
             // cobraRaw.setDouble(getCobraRawValue(0)); //Just going to use channel 0 for
             // cobraVoltage.setDouble(getCobraVoltage(0));
-            setLeftMotorSpeed(LeftMotor.getDouble(0));
-            setRightMotorSpeed(RightMotor.getDouble(0));
-            setBackMotorSpeed(BackMotor.getDouble(0));
+            //setLeftMotorSpeed(LeftMotor.getDouble(0));
+            //setRightMotorSpeed(RightMotor.getDouble(0));
+            //setBackMotorSpeed(BackMotor.getDouble(0));
             LeftEncoder.setDouble(getLeftEncoderDistance());
             RightEncoder.setDouble(getRightEncoderDistance());
             BackEncoder.setDouble(getBackEncoderDistance());
             ForwardForce.setDouble(getAverageForwardEncoderDistance());
-            navX.setDouble(getYaw());
+            navX.setDouble(getAngle());
         }
-        x++;*/
+        x++;
     }
 }

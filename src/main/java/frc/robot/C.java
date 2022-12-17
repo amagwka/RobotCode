@@ -7,12 +7,11 @@
 
 package frc.robot;
 
-public final class C
-{
+public final class C{
     /**
      * Motor Constants
      */
-    public static final int TITAN_ID                 = 42; 
+    public static final int TITAN_ID                 = 42;
     public static final int MOTOR_ROTATE_LIFT        = 2;
     //public static final int MOTOR_ROTATE_LIFT        = 2;
     public static final int SERVO_GRIPPER            = 0;

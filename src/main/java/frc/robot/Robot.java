@@ -8,20 +8,17 @@
 package frc.robot;
 
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
 //import frc.robot.commands.ForwardEncoder;
 //import frc.robot.commands.RotateEncoder;
-import frc.robot.commands.Test;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,12 +30,14 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   Drive drive;
+  Autonomous auto;
 
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer. 
     m_robotContainer = new RobotContainer();
     drive = new Drive();
+    auto = new Autonomous();
     
     new Thread(()->{
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -71,14 +70,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-
+    
   }
   
   @Override
   public void autonomousInit() {
-    /*CommandScheduler.getInstance()
-    .schedule(new SequentialCommandGroup(
-            new ForwardEncoder(100, 1,true)));*/
+    CommandScheduler.getInstance()
+    .schedule(auto);
   }
   
   @Override
@@ -89,6 +87,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     CommandScheduler.getInstance().schedule(drive);
   }
+  
   @Override
   public void teleopPeriodic() {
   }
