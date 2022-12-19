@@ -9,12 +9,12 @@ public class Autonomous extends SequentialCommandGroup
     {
         addCommands(
             
-        new ResetEncoder(),
-        //new ForwardEncoder(+1000, 1, true),
+        //new ResetEncoder(),
+        new ForwardEncoder(1000, 0.1, true),
        // new ForwardEncoder(-1000, 1, true),*/
         //new ForwardEncoder(-500, 1, true),
         //new ForwardEncoder(1000,1,true),
-        
+        /*
         new RotateEncoder(540, 0.1, true, true),
         new RotateEncoder(-540, 0.1, true, true), // two starts with clearing
         new ForwardEncoder(600,1,true), // exiting 1 step
@@ -46,7 +46,7 @@ public class Autonomous extends SequentialCommandGroup
         new RotateEncoder(90, 0.1, true, true),
         new ForwardEncoder(950,1,true),
         new RotateEncoder(90, 0.1, true, true),
-        new ForwardEncoder(500,1,true),
+        new ForwardEncoder(500,1,true),*/
 
 
         new StopMotors());

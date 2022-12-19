@@ -147,7 +147,7 @@ public class Training extends SubsystemBase {
     public double getRightEncoderDistance() {
         return rightEncoder.getEncoderDistance() * -1;
     }
-    public double getAverageForwardEncoderDistance() {
+    public double zgetAverageForwardEncoderDistance() {
         return (getLeftEncoderDistance() + getRightEncoderDistance()) * Math.cos(Math.toRadians(30));
     }
     public double getBackEncoderDistance() {
