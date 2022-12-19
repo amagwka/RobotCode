@@ -70,9 +70,9 @@ public class Training extends SubsystemBase {
         rightMotor = new TitanQuad(C.TITAN_ID, 0);
         backMotor = new TitanQuad(C.TITAN_ID, 1);
 
-        leftEncoder = new TitanQuadEncoder(leftMotor, 3, 0.429179324);
-        rightEncoder = new TitanQuadEncoder(rightMotor, 0, 0.429179324);
-        backEncoder = new TitanQuadEncoder(backMotor, 1, 0.429179324);
+        leftEncoder = new TitanQuadEncoder(leftMotor, 3, 1);
+        rightEncoder = new TitanQuadEncoder(rightMotor, 0, 1);
+        backEncoder = new TitanQuadEncoder(backMotor, 1, 1);
 
         
 
@@ -121,10 +121,10 @@ public class Training extends SubsystemBase {
         gyro.zeroYaw();
     }
 
-    public void holonomicDrive(double x, double y, double z) {
-        double rightSpeed = ((((x / 3) - (y / Math.sqrt(3))) * Math.sqrt(3)) + z) / 1.5;
-        double leftSpeed = ((((x / 3) + (y / Math.sqrt(3))) * Math.sqrt(3)) + z) / 1.5;
-        double backSpeed = ((-x) + z) / 1.5;
+    public void holonomicDriveOLD(double x, double y, double z) {
+        double rightSpeed = ((((x / 3) - (y / Math.sqrt(3))) * Math.sqrt(3)) + z) ;
+        double leftSpeed = ((((x / 3) + (y / Math.sqrt(3))) * Math.sqrt(3)) + z) ;
+        double backSpeed = ((-x) + z);
         /*
          * double max = Math.abs(rightSpeed); if (Math.abs(leftSpeed) > max) max =
          * Math.abs(leftSpeed); if (Math.abs(backSpeed) > max) max =
@@ -139,6 +139,32 @@ public class Training extends SubsystemBase {
         rightMotor.set(rightSpeed);
         backMotor.set(backSpeed);
     }
+    public void holonomicDrive(double x, double y, double z) {
+        double rightSpeed = x*0.5 - Math.sqrt(3)/2*y + z;
+        double leftSpeed = x*0.5 + Math.sqrt(3)/2*y + z;
+        double backSpeed = ((-x) + z);
+        
+        double max = Math.abs(rightSpeed); if (Math.abs(leftSpeed) > max) max =
+        Math.abs(leftSpeed); if (Math.abs(backSpeed) > max) max =
+        Math.abs(backSpeed);
+        if (max > 1) { rightSpeed /= max; leftSpeed /= max; backSpeed /= max; }
+        
+        // LeftSpeed.setDouble(leftSpeed);
+        // RightSpeed.setDouble(rightSpeed);
+        // BackSpeed.setDouble(backSpeed);
+        leftMotor.set(leftSpeed);
+        rightMotor.set(rightSpeed);
+        backMotor.set(backSpeed);
+    }
+
+    public void AutoForward(double y) {
+        double rightSpeed = -y ;
+        double leftSpeed = y;
+
+        leftMotor.set(leftSpeed);
+        rightMotor.set(rightSpeed);
+    }
+
 
 
     public double getLeftEncoderDistance() {
