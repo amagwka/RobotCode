@@ -60,7 +60,7 @@ public class Training extends SubsystemBase {
     private NetworkTableEntry BackMotor = tab.add("Back Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     */
     private NetworkTableEntry ForwardForce = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    private NetworkTableEntry navX = tab.add("NavX Yaw", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    public NetworkTableEntry navX = tab.add("NavX Yaw", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     
     OI oi;
     int x=0;
@@ -162,7 +162,7 @@ public class Training extends SubsystemBase {
         double leftSpeed = y;
 
         leftMotor.set(leftSpeed);
-        rightMotor.set(rightSpeed);
+        rightMotor.set(rightSpeed);//BuiltInWidgets.kGraph
     }
 
 
@@ -173,7 +173,7 @@ public class Training extends SubsystemBase {
     public double getRightEncoderDistance() {
         return rightEncoder.getEncoderDistance() * -1;
     }
-    public double zgetAverageForwardEncoderDistance() {
+    public double getAverageForwardEncoderDistance() {
         return (getLeftEncoderDistance() + getRightEncoderDistance()) * Math.cos(Math.toRadians(30));
     }
     public double getBackEncoderDistance() {
@@ -234,7 +234,7 @@ public class Training extends SubsystemBase {
             RightEncoder.setDouble(getRightEncoderDistance());
             BackEncoder.setDouble(getBackEncoderDistance());
             ForwardForce.setDouble(getAverageForwardEncoderDistance());
-            navX.setDouble(getAngle());
+            //navX.setDouble(getAngle());
         }
         x++;
     }
