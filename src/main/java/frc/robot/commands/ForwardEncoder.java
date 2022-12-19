@@ -10,6 +10,7 @@ public class ForwardEncoder extends CommandBase {
 
     private double setpointDistanceArgument=0;
     private double setpointDistance=0;
+    private double smoothLimit=0.05;
     PIDController pidYAxis;
 
 
@@ -30,8 +31,10 @@ public class ForwardEncoder extends CommandBase {
     @Override
     public void execute() {
             train.holonomicDrive(0.0, MathUtil
-                    .clamp(pidYAxis.calculate(train.getAverageForwardEncoderDistance(), setpointDistance), -0.7, 0.7),0.0);
-            
+                    .clamp(pidYAxis.calculate(train.getAverageForwardEncoderDistance(), setpointDistance), -smoothLimit, smoothLimit),0.0);
+            if(smoothLimit<1){
+            smoothLimit=smoothLimit+0.05;
+            }
     }
     @Override
     public void end(boolean interrupted) {
