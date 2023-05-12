@@ -8,8 +8,10 @@
 package frc.robot;
 
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
@@ -45,7 +47,7 @@ public class Robot extends TimedRobot {
       camera.setFPS(30);
 
       CvSink cvSink = CameraServer.getInstance().getVideo();
-      //CvSource outputStream = CameraServer.getInstance().putVideo("GrayScale", 640, 480);
+      CvSource outputStream = CameraServer.getInstance().putVideo("MK", 640, 480);
 
       Mat source = new Mat();
       //Mat output = new Mat();
@@ -54,7 +56,7 @@ public class Robot extends TimedRobot {
         if(cvSink.grabFrame(source) == 0)
           continue;
         //Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-        //outputStream.putFrame(output);
+        outputStream.putFrame(source);
       }
     }).start();
   }

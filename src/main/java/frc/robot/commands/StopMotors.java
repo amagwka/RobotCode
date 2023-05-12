@@ -20,7 +20,7 @@ public class StopMotors extends CommandBase {
 
     @Override
     public void execute() {
-            
+        train.setDriveMotorSpeeds(0.0, 0.0, 0.0);
     }
     @Override
     public void end(boolean interrupted) {

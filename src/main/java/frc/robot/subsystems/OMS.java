@@ -15,7 +15,7 @@ public class OMS extends SubsystemBase {
      * Motors
      */
     private TitanQuad R_lift;
-    private Servo gripper, R_gripper;
+    private Servo gripper;
     private ServoContinuous lift;
     private DigitalInput upLimit;
     private DigitalInput downLimit;
@@ -28,7 +28,7 @@ public class OMS extends SubsystemBase {
     /**
      * Shuffleboard
      */
-    private ShuffleboardTab tab = Shuffleboard.getTab("OMS");
+    //private ShuffleboardTab tab = Shuffleboard.getTab("OMS");
     /*
     private NetworkTableEntry R_liftEncoderValue = tab.add("Rotate_lift Encoder", 0).getEntry();
 
@@ -50,8 +50,9 @@ public class OMS extends SubsystemBase {
     public OMS() {
         R_lift = new TitanQuad(C.TITAN_ID, C.MOTOR_ROTATE_LIFT);
         gripper = new Servo(C.SERVO_GRIPPER);
+        
         lift = new ServoContinuous(C.SERVO_LIFT);
-        R_gripper = new Servo(C.SERVO_GRIPPER_ROTATE);
+
         downLimit = new DigitalInput(10);
         upLimit = new DigitalInput(9);
         
@@ -59,33 +60,15 @@ public class OMS extends SubsystemBase {
         R_liftEncoder = new TitanQuadEncoder(R_lift, C.MOTOR_ROTATE_LIFT, 1); //0.429179
     }
 
-    public void setR_liftMotorSpeed(double speed) {
-        R_lift.set(speed);
+    //****************
+    public void setLiftSpeed(double speed) {
+        lift.setSpeed(speed);
     }
-
-    public double getR_liftEncoderDistance() {
-        return R_liftEncoder.getEncoderDistance();
-    }
-
 
     public void setGripperPosition(double degrees) {
         gripper.setAngle(degrees);
     }
-
-    public void setR_gripperPosition(double degrees) {
-        R_gripper.setAngle(degrees);
-    }
-
-    public void setLiftSpeed(double speed) {
-        /*if (upLimit.get()) {
-            lift.setSpeed(Math.abs(speed));
-        } if (downLimit.get())
-            lift.setSpeed(-Math.abs(speed));
-        else {
-            lift.setSpeed(speed);
-        }*/
-        lift.setSpeed(speed);
-    }
+    //****************
 
     public void resetEncoders() {
         R_liftEncoder.reset();

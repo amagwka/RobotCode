@@ -1,6 +1,9 @@
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.RobotContainer;
 import frc.robot.gamepad.OI;
 import frc.robot.subsystems.OMS;
@@ -34,7 +37,7 @@ public class Drive extends CommandBase {
     boolean inputYButton = false;
 
     double r_gripperDegrees = 150;
-    double gripperDegrees = 150;
+    double gripperDegrees = 60;
     double r_LiftSpeed = 0;
     double liftSpeed = 0;
 
@@ -62,8 +65,8 @@ public class Drive extends CommandBase {
      */
     private static final double DELTA_LIMIT = 0.075;
 
-    // private NetworkTableEntry RightBumper = train.tab.add("Right Bumper",
-    // 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+     private NetworkTableEntry RightBumper = train.tab.add("Right Bumper",
+     0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
 
     /**
      * Constructor
@@ -105,7 +108,7 @@ public class Drive extends CommandBase {
         inputXButton = oi.getDriveXButton();
         inputYButton = oi.getDriveYButton();
 
-        // RightBumper.setDouble(inputRightBumper);
+        
 
         deltaLeftX = inputLeftX - prevLeftX;
         deltaLeftY = inputLeftY - prevLeftY;
@@ -127,34 +130,21 @@ public class Drive extends CommandBase {
         prevRightY = inputRightY;
 
         gripperDegrees += (-inputLeftBumper - 1) * 3 + (inputRightBumper + 1) * 3;
-        r_gripperDegrees += -toInt(inputXButton)*0.5 + toInt(inputBButton) *0.5;
+        r_gripperDegrees += -toInt(inputXButton)*2 + toInt(inputBButton) *2;
         //r_gripperDegrees += -toInt(inputLeftLTButton) + (toInt(inputRightRTButton) );
         liftSpeed += -toInt(inputYButton) * 0.7 + toInt(inputAButton) * 0.7;
         r_LiftSpeed += -toInt(inputLeftLTButton)*0.2 + toInt(inputRightRTButton)*0.2;
-
-        if (gripperDegrees > 300)
-            gripperDegrees = 300;
-        if (gripperDegrees < 0)
-            gripperDegrees = 0;
-        if (r_gripperDegrees > 300)
-            r_gripperDegrees = 300;
-        if (r_gripperDegrees < 0)
-            r_gripperDegrees = 0;
-        if (r_LiftSpeed < -1.0)
-            r_LiftSpeed = -1;
-        if (r_LiftSpeed > 1.0)
-            r_LiftSpeed = 1;
-        if (liftSpeed < -1.0)
-            liftSpeed = -1;
-        if (liftSpeed > 1.0)
-            liftSpeed = 1;
+        
+        gripperDegrees=MathUtil.clamp(gripperDegrees, 0, 180);
+        r_gripperDegrees=MathUtil.clamp(r_gripperDegrees, 0, 180);
+        liftSpeed=MathUtil.clamp(liftSpeed, -1, 1);
 
         liftSpeed /= 3;
         r_LiftSpeed /= 2;
-        oms.setGripperPosition(gripperDegrees);
-        oms.setR_gripperPosition(r_gripperDegrees);
+        RightBumper.setDouble(r_gripperDegrees);
+        oms.setGripperPosition(r_gripperDegrees);
         oms.setLiftSpeed(liftSpeed);
-        oms.setR_liftMotorSpeed(r_LiftSpeed);
+        //oms.setGripper2Position(r_LiftSpeed);
         // getMotorSpeeds(inputLeftX,inputLeftY,inputRightY);
 
         /*
@@ -164,7 +154,7 @@ public class Drive extends CommandBase {
          * train.setMotor2Speed(((0.5*inputLeftX)+(1.2247448714*inputLeftY)+inputRightY)
          * /(inputLeftB+0.7));
          */
-        train.holonomicDrive(inputLeftX, inputLeftY, inputRightY);
+        train.holonomicDrive(inputLeftX/3, inputLeftY/3, inputRightY/3);
         /*
          * train.setMotor0Speed(0.5 * inputLeftX - 0.866 * inputLeftY + inputRightY);
          * train.setMotor1Speed(0.5 * inputLeftX + 0.866 * inputLeftY + inputRightY);

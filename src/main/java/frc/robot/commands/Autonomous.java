@@ -10,8 +10,8 @@ public class Autonomous extends SequentialCommandGroup
         addCommands(
             
         //new ResetEncoder(),
-        new ForwardEncoder(3000, 1, true),
-        new ForwardEncoder(-3000, 1, true),
+        new ForwardEncoder(100, 1, true),
+        new ForwardEncoder(-100, 1, true),
        // new ForwardEncoder(-1000, 1, true),*/
         //new ForwardEncoder(-500, 1, true),
         //new ForwardEncoder(1000,1,true),

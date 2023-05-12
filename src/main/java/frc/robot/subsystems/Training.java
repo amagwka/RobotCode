@@ -66,13 +66,15 @@ public class Training extends SubsystemBase {
     int x=0;
     public Training() {
         oi = new OI();
-        leftMotor = new TitanQuad(C.TITAN_ID, 3);
-        rightMotor = new TitanQuad(C.TITAN_ID, 0);
-        backMotor = new TitanQuad(C.TITAN_ID, 1);
+        
+        backMotor = new TitanQuad(C.TITAN_ID, 0);
+        leftMotor = new TitanQuad(C.TITAN_ID, 1);
+        rightMotor = new TitanQuad(C.TITAN_ID, 2);
+        
 
-        leftEncoder = new TitanQuadEncoder(leftMotor, 3, 1);
-        rightEncoder = new TitanQuadEncoder(rightMotor, 0, 1);
-        backEncoder = new TitanQuadEncoder(backMotor, 1, 1);
+        leftEncoder = new TitanQuadEncoder(leftMotor, 1, 1);
+        rightEncoder = new TitanQuadEncoder(rightMotor, 2, 1);
+        backEncoder = new TitanQuadEncoder(backMotor, 0, 1);
 
         
 
