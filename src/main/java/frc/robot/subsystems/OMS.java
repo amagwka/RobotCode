@@ -56,7 +56,6 @@ public class OMS extends SubsystemBase {
         downLimit = new DigitalInput(10);
         upLimit = new DigitalInput(9);
         
-        
         R_liftEncoder = new TitanQuadEncoder(R_lift, C.MOTOR_ROTATE_LIFT, 1); //0.429179
     }
 

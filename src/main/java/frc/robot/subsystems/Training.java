@@ -25,42 +25,23 @@ import com.studica.frc.Cobra;
 import com.studica.frc.Servo;
 import com.studica.frc.ServoContinuous;
 
+
+
 public class Training extends SubsystemBase {
-    /**
-     * Motors
-     */
-    private TitanQuad leftMotor;
-    private TitanQuad rightMotor;
-    private TitanQuad backMotor;
-    private Servo servoRGripper, servoGripper;
-    private ServoContinuous servoLift;
-    private TitanQuadEncoder leftEncoder;
-    private TitanQuadEncoder rightEncoder;
-    private TitanQuadEncoder backEncoder;
+    private MotorSystem motorSystem;
+    private SensorSystem sensorSystem;
+    private ShuffleboardSystem shuffleboardSystem;
+    private int x = 0;
 
-    /**
-     * Sensors
-     */
-    private Cobra cobra;
-    private Ultrasonic sonic;
-    private AnalogInput sharp;
-    private AHRS gyro;
-
-    /**
-     * Shuffleboard
-     */
-    public ShuffleboardTab tab = Shuffleboard.getTab("Training");
+    public Training(MotorSystem motorSystem, SensorSystem sensorSystem, ShuffleboardSystem shuffleboardSystem) {
+        this.motorSystem = motorSystem;
+        this.sensorSystem = sensorSystem;
+        this.shuffleboardSystem = shuffleboardSystem;
+    }
     
-    private NetworkTableEntry LeftEncoder = tab.add("Left Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    private NetworkTableEntry RightEncoder = tab.add("Right Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    private NetworkTableEntry BackEncoder = tab.add("Back Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-
-    /*private NetworkTableEntry LeftMotor = tab.add("Left Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
-    private NetworkTableEntry RightMotor = tab.add("Right Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    private NetworkTableEntry BackMotor = tab.add("Back Motor", 0).withProperties(Map.of("min", -1, "max", 1)).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    */
-    private NetworkTableEntry ForwardForce = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-    public NetworkTableEntry navX = tab.add("NavX Yaw", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+    public MotorSystem getMotorSystem() {
+        return this.motorSystem;
+    }
     
     OI oi;
     int x=0;
