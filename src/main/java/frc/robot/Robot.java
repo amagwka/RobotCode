@@ -10,6 +10,7 @@ package frc.robot;
 import org.opencv.core.Mat;
 
 import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
@@ -45,7 +46,7 @@ public class Robot extends TimedRobot {
       camera.setFPS(30);
 
       CvSink cvSink = CameraServer.getInstance().getVideo();
-      //CvSource outputStream = CameraServer.getInstance().putVideo("GrayScale", 640, 480);
+      CvSource outputStream = CameraServer.getInstance().putVideo("GrayScale", 640, 480);
 
       Mat source = new Mat();
       //Mat output = new Mat();
