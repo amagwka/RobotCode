@@ -13,11 +13,8 @@ public class ResetEncoder extends CommandBase {
 
     @Override
     public void initialize() {
-        train.resetLeftEncoder();
-        train.resetBackEncoder();
-        train.resetRightEncoder();
-        train.resetGyro();
-        
+        train.getMotorSystem().resetEncoders();
+        RobotContainer.train.getMotorSystem().resetEncoders();
     }
 
     @Override

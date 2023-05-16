@@ -20,35 +20,19 @@ public class RotateEncoder extends CommandBase {
     public RotateEncoder(double setpointYawArg, double epsilonYaw, boolean enablePIDForEachMotor,boolean delta) {
         setpointYaw = setpointYawArg;
         addRequirements(train);
-        /*
-        pidLeftAxis = new PIDController(0.2, 0., 0.);
-        pidLeftAxis.setTolerance(1);
-
-        pidRightAxis = new PIDController(0.2, 0., 0.);
-        pidRightAxis.setTolerance(1);
-
-        pidBackAxis = new PIDController(0.2, 0., 0.);
-        pidBackAxis.setTolerance(1);
-        */
         pidZAxis = new PIDController(0.1, 0.0, 0.00);
         pidZAxis.setTolerance(epsilonYaw);
     }
 
     @Override
     public void initialize() {
-        /*motors[0] = (train.getRightEncoderDistance() + train.getBackEncoderDistance())
-                - (train.getLeftEncoderDistance() * 2);
-        motors[1] = (train.getLeftEncoderDistance() + train.getBackEncoderDistance())
-                - (train.getRightEncoderDistance() * 2);
-        motors[2] = (train.getLeftEncoderDistance() + train.getRightEncoderDistance())
-                - (train.getBackEncoderDistance() * 2);*/
-        setpointYaw = train.getAngle()+setpointYaw;
+        setpointYaw = train.getSensorSystem().getAngle()+setpointYaw;
     }
 
     @Override
     public void execute() {
         //for (int i = 0; i < 3; i++) {
-            train.holonomicDrive(0.0, 0.0, MathUtil.clamp(pidZAxis.calculate(train.getAngle(), setpointYaw), -1.0, 1.0));
+            train.getMotorSystem().holonomicDrive(0.0, 0.0, MathUtil.clamp(pidZAxis.calculate(train.getSensorSystem().getAngle(), setpointYaw), -1.0, 1.0));
         //}
         /*
         train.setDriveMotorSpeeds(
@@ -62,7 +46,7 @@ public class RotateEncoder extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        train.setDriveMotorSpeeds(0., 0., 0.);
+        train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
     }
 
     @Override

@@ -21,6 +21,7 @@ import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
 //import frc.robot.commands.ForwardEncoder;
 //import frc.robot.commands.RotateEncoder;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,8 +37,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer. 
-    m_robotContainer = new RobotContainer();
+    m_robotContainer = new RobotContainer(new MotorSystem(1, 2, 0),new SensorSystem(),new ShuffleboardSystem());
     drive = new Drive();
     auto = new Autonomous();
     

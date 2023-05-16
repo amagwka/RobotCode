@@ -1,39 +1,28 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import frc.robot.gamepad.OI;
-import frc.robot.subsystems.OMS;
-import frc.robot.subsystems.Training;
+import frc.robot.subsystems.*;
+
 public class RobotContainer {
 
-  /**
-   * Create the subsystems and gamepad objects
-   */
-  
   public static Training train;
+  public static SensorSystem sensorSystem;
+  public static ShuffleboardSystem shuffleboardSystem;
+  public static MotorSystem motorSystem;
   public static OI oi;
   public static OMS oms;
 
-  public RobotContainer(){
-      //Create new instances
-      //autonomousCommand = new Autonomous(-1000,1,-80,0.1);
-      //drive=new Drive();
-      train = new Training();
-      oms = new OMS();
-      oi = new OI();
-      //train.setDefaultCommand(new Autonomous(-1000,1,-80,0.1));
-      
-  }/*
-  public CommandBase getTeleopCommand() {
-    return drive;
+  public RobotContainer(MotorSystem motorSystem,SensorSystem sensorSystem,ShuffleboardSystem shuffleboardSystem) {
+    /*sensorSystem = new SensorSystem();
+    motorSystem = new MotorSystem(1, 2, 0);
+    shuffleboardSystem = new ShuffleboardSystem();*/
+    train = new Training(motorSystem, sensorSystem, shuffleboardSystem);
+    oms = new OMS();
+    oi = new OI();
+    // train.setDefaultCommand(new Autonomous(-1000,1,-80,0.1));
+
   }
-  public CommandBase getAutonomousCommand() {
-    return autonomousCommand;
-  }*/
+
+public RobotContainer() {
+}
 }

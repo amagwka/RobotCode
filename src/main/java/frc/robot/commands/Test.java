@@ -1,11 +1,5 @@
 package frc.robot.commands;
 
-import java.util.Map;
-
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.gamepad.OI;
@@ -115,7 +109,7 @@ public class Test extends CommandBase
         /*train.setMotor0Speed((-inputLeftX+inputRightY)/(inputLeftB+0.7));
         train.setMotor1Speed(((0.5*inputLeftX)-(1.2247448714*inputLeftY)+inputRightY)/(inputLeftB+1));
         train.setMotor2Speed(((0.5*inputLeftX)+(1.2247448714*inputLeftY)+inputRightY)/(inputLeftB+0.7));*/
-        train.holonomicDrive(inputLeftX, inputLeftY, inputRightY);
+        train.getMotorSystem().holonomicDrive(inputLeftX, inputLeftY, inputRightY);
         /*
         train.setMotor0Speed(0.5 * inputLeftX - 0.866 * inputLeftY + inputRightY);
         train.setMotor1Speed(0.5 * inputLeftX + 0.866 * inputLeftY + inputRightY);
@@ -125,7 +119,7 @@ public class Test extends CommandBase
 
     @Override
     public void end(boolean interrupted){
-        train.setDriveMotorSpeeds(0.,0.,0.);
+        train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
     }
     
 

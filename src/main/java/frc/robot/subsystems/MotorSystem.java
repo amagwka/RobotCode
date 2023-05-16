@@ -79,19 +79,19 @@ public class MotorSystem {
     }
 
     public double getLeftEncoderDistance() {
-        return leftEncoder.getEncoderDistance();
+        return leftEncoder.getRaw();
     }
 
     public double getRightEncoderDistance() {
-        return rightEncoder.getEncoderDistance() * -1;
+        return rightEncoder.getRaw() * -1;
     }
 
     public double getBackEncoderDistance() {
-        return backEncoder.getEncoderDistance();
+        return backEncoder.getRaw();
     }
 
     public double getAverageForwardEncoderDistance() {
-        return (getLeftEncoderDistance() + getRightEncoderDistance()) * Math.cos(Math.toRadians(30));
+        return (getLeftEncoderDistance() + getRightEncoderDistance()) * 0.5;
     }
 
     public void resetLeftEncoder() {

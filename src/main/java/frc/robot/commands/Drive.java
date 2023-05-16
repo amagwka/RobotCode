@@ -65,7 +65,7 @@ public class Drive extends CommandBase {
      */
     private static final double DELTA_LIMIT = 0.075;
 
-     private NetworkTableEntry RightBumper = train.tab.add("Right Bumper",
+     private NetworkTableEntry RightBumper = train.getShuffleboardSystem().tab.add("Right Bumper",
      0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
 
     /**
@@ -134,7 +134,7 @@ public class Drive extends CommandBase {
         //r_gripperDegrees += -toInt(inputLeftLTButton) + (toInt(inputRightRTButton) );
         liftSpeed += -toInt(inputYButton) * 0.7 + toInt(inputAButton) * 0.7;
         r_LiftSpeed += -toInt(inputLeftLTButton)*0.2 + toInt(inputRightRTButton)*0.2;
-        
+
         gripperDegrees=MathUtil.clamp(gripperDegrees, 0, 180);
         r_gripperDegrees=MathUtil.clamp(r_gripperDegrees, 0, 180);
         liftSpeed=MathUtil.clamp(liftSpeed, -1, 1);
@@ -154,7 +154,7 @@ public class Drive extends CommandBase {
          * train.setMotor2Speed(((0.5*inputLeftX)+(1.2247448714*inputLeftY)+inputRightY)
          * /(inputLeftB+0.7));
          */
-        train.holonomicDrive(inputLeftX/3, inputLeftY/3, inputRightY/3);
+        train.getMotorSystem().holonomicDrive(inputLeftX/3, inputLeftY/3, inputRightY/3);
         /*
          * train.setMotor0Speed(0.5 * inputLeftX - 0.866 * inputLeftY + inputRightY);
          * train.setMotor1Speed(0.5 * inputLeftX + 0.866 * inputLeftY + inputRightY);
@@ -164,7 +164,7 @@ public class Drive extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        train.setDriveMotorSpeeds(0., 0., 0.);
+        train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
     }
 
     @Override
