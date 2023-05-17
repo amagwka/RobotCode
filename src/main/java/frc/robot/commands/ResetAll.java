@@ -3,11 +3,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Training;
 
-public class ResetEncoder extends CommandBase {
+public class ResetAll extends CommandBase {
+    public ResetAll() {
 
-
-
-    public ResetEncoder() {
     }
 
     @Override
@@ -22,6 +20,7 @@ public class ResetEncoder extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         RobotContainer.train.getMotorSystem().resetEncoders();
+        RobotContainer.train.getSensorSystem().resetGyro();
     }
     @Override
     public boolean isFinished() {

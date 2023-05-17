@@ -8,8 +8,11 @@ public class Autonomous extends SequentialCommandGroup
     public Autonomous()
     {
         addCommands(
-        new ForwardEncoder(732*1, 5, true),
-        new ForwardEncoder(-732*2, 5, true),
+          new ResetAll(),
+        //new RotateEncoder(-90, 1, false,false),
+        new ForwardEncoder(732*5, 5,false),
+        new RotateEncoder(180, 5,false),
+        new ForwardEncoder(732*5, 5,false),
         new StopMotors());
       }
 }

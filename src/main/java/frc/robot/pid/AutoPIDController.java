@@ -15,7 +15,7 @@ public class AutoPIDController {
     private Timer timer;
 
     public AutoPIDController(double epsilonDistance, double setpoint, double integratorRange) {
-        pidController = new PIDController(0.00001, 0.0, 0.0);
+        pidController = new PIDController(0.03, 0.003, 0.0003);
         pidController.setTolerance(epsilonDistance);
         pidController.setIntegratorRange(setpoint - integratorRange, setpoint + integratorRange);
         smoothLimit = 0.2;

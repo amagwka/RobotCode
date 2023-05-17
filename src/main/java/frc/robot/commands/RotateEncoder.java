@@ -8,45 +8,55 @@ import frc.robot.subsystems.Training;
 
 public class RotateEncoder extends CommandBase {
 
-    private static final Training train = RobotContainer.train;
-
     private double setpointYaw;
+    private boolean debug;
 
-    PIDController pidLeftAxis, pidRightAxis, pidBackAxis;
-    PIDController pidZAxis;
+    private PIDController pidZAxis;
 
-    double[] motors = new double[] { 0, 0, 0 };
+    private double out;
 
-    public RotateEncoder(double setpointYawArg, double epsilonYaw, boolean enablePIDForEachMotor,boolean delta) {
+    public RotateEncoder(double setpointYawArg, double epsilonYaw, boolean debug) {
         setpointYaw = setpointYawArg;
-        addRequirements(train);
-        pidZAxis = new PIDController(0.1, 0.0, 0.00);
+        this.debug = debug;
+        addRequirements(RobotContainer.train);
+        pidZAxis = new PIDController(0.1, 0.0001, 0.00);
         pidZAxis.setTolerance(epsilonYaw);
+        pidZAxis.setIntegratorRange(-3, 3);
     }
 
     @Override
     public void initialize() {
-        setpointYaw = train.getSensorSystem().getAngle()+setpointYaw;
+        pidZAxis.setSetpoint(setpointYaw);
     }
 
     @Override
     public void execute() {
-        //for (int i = 0; i < 3; i++) {
-            train.getMotorSystem().holonomicDrive(0.0, 0.0, MathUtil.clamp(pidZAxis.calculate(train.getSensorSystem().getAngle(), setpointYaw), -1.0, 1.0));
-        //}
-        /*
-        train.setDriveMotorSpeeds(
-                MathUtil.clamp(pidLeftAxis.calculate(train.getRightEncoderDistance() + train.getBackEncoderDistance()
-                        - train.getLeftEncoderDistance() * 2, motors[0]), -0.2, 0.2),
-                MathUtil.clamp(pidRightAxis.calculate(train.getLeftEncoderDistance() + train.getBackEncoderDistance()
-                        - train.getRightEncoderDistance() * 2, motors[1]), -0.2, 0.2),
-                MathUtil.clamp(pidBackAxis.calculate(train.getLeftEncoderDistance() + train.getRightEncoderDistance()
-                        - train.getBackEncoderDistance() * 2, motors[2]), -0.2, 0.2));*/
+        double currentSetpointYaw = debug
+                ? RobotContainer.train.getShuffleboardSystem().getAdditionalValueOutput().getDouble(0)
+                : setpointYaw;
+        if ((setpointYaw != currentSetpointYaw) && debug) {
+            setpointYaw = currentSetpointYaw;
+            pidZAxis.setSetpoint(setpointYaw);
+            updatePID();
+        }
+        double angle = RobotContainer.train.getSensorSystem().getAngle();
+        out = pidZAxis.calculate(angle, setpointYaw);
+        RobotContainer.train.getMotorSystem().holonomicDrive(0.0, 0.0, MathUtil.clamp(out, -0.3, 0.3));
+        if (debug)
+            RobotContainer.train.getShuffleboardSystem()
+                    .updateTestString(String.format("S: %.2f O: %.2f A: %.2f", setpointYaw, out, angle));
     }
 
     @Override
     public void end(boolean interrupted) {
-        train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
+        RobotContainer.train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
+        pidZAxis.close();
+    }
+
+    private void updatePID() {
+        pidZAxis.setPID(RobotContainer.train.getShuffleboardSystem().getP().getDouble(0),
+                RobotContainer.train.getShuffleboardSystem().getI().getDouble(0),
+                RobotContainer.train.getShuffleboardSystem().getD().getDouble(0));
     }
 
     @Override
