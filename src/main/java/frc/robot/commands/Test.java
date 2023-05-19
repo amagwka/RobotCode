@@ -12,7 +12,7 @@ public class Test extends CommandBase
      * Bring in Subsystem and Gamepad code
      */
     private static final Training train = RobotContainer.train;
-    private static final OMS oms = RobotContainer.oms;
+    //private static final OMS oms = RobotContainer.oms;
     private static final OI oi = RobotContainer.oi;
     
     /**
@@ -58,7 +58,7 @@ public class Test extends CommandBase
     
 
     public Test(){
-        addRequirements(train,oms);
+        addRequirements(train);
     }
     @Override
     public void initialize(){

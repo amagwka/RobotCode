@@ -4,20 +4,22 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import frc.robot.C;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Timer;
 import com.kauailabs.navx.frc.AHRS;
 import com.studica.frc.Cobra;
 
 public class SensorSystem {
     private Cobra cobra;
     private Ultrasonic sonic;
-    private AnalogInput sharp;
+    private AnalogInput aInput;
+    //private AnalogInput sharp;
     private AHRS gyro;
 
     public SensorSystem() {
         this.cobra = new Cobra();
-        this.sharp = new AnalogInput(C.SHARP);
-        this.sonic = new Ultrasonic(C.SONIC_TRIGG, C.SONIC_ECHO);
+        //this.sharp = new AnalogInput(C.SHARP);
+        this.sonic = new Ultrasonic(10, 11);
+        this.sonic.setAutomaticMode(true);
+        this.aInput = new AnalogInput(0);
         this.gyro = new AHRS(SPI.Port.kMXP);
     }
 
@@ -28,14 +30,14 @@ public class SensorSystem {
     public double getCobraVoltage(int channel) {
         return cobra.getVoltage(channel);
     }
-
+/*
     public double getIRDistance() {
         return (Math.pow(sharp.getAverageVoltage(), -1.2045) * 27.726);
     }
-
+*/
     public double getSonicDistance(boolean metric) {
-        sonic.ping();
-        Timer.delay(0.01);
+        //sonic.ping();
+        //Timer.delay(0.003);
         if (metric)
             return sonic.getRangeMM();
         else
@@ -52,6 +54,10 @@ public class SensorSystem {
 
     public double getRoll() {
         return gyro.getRoll()+180;
+    }
+
+    public AnalogInput getaInput() {
+        return aInput;
     }
 
     public void resetGyro() {

@@ -12,6 +12,7 @@ public class ShuffleboardSystem {
     private NetworkTableEntry backEncoderEntry;
     private NetworkTableEntry forwardForceEntry;
     private NetworkTableEntry additionalValueOutput;
+    private NetworkTableEntry ultrasonic;
     private NetworkTableEntry P;
     private NetworkTableEntry I;
     private NetworkTableEntry D;
@@ -23,6 +24,7 @@ public class ShuffleboardSystem {
         this.leftEncoderEntry = tab.add("Left Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.rightEncoderEntry = tab.add("Right Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.backEncoderEntry = tab.add("Back Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+        this.ultrasonic = tab.add("Ultrasonic", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.forwardForceEntry = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.additionalValueOutput = tab.add("Test value", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
         this.P = tab.add("P", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
@@ -45,32 +47,51 @@ public class ShuffleboardSystem {
     public void updateNavXEntry(double angle) {
         navXEntry.setDouble(angle);
     }
+
     public void updateTestValue(double value) {
         additionalValueOutput.setDouble(value);
     }
+
     /**
      * @return the additionalValueOutput
      */
     public NetworkTableEntry getAdditionalValueOutput() {
         return additionalValueOutput;
     }
+
+    /**
+     * @return the pID
+     */
+    public NetworkTableEntry getPID() {
+        return PID;
+    }
+    /**
+     * @param pID the pID to set
+     */
+    public void setPID(NetworkTableEntry pID) {
+        PID = pID;
+    }
+
     /**
      * @return the p
      */
     public NetworkTableEntry getP() {
         return P;
     }
+
     /**
      * @return the i
      */
     public NetworkTableEntry getI() {
         return I;
     }
-    /**
-     * @return the d
-     */
+
     public NetworkTableEntry getD() {
         return D;
+    }
+
+    public void setUltrasonic(double value) {
+        ultrasonic.setDouble(value);
     }
 
     public void updateTestString(String text) {
