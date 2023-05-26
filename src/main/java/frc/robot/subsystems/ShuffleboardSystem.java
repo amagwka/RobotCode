@@ -59,18 +59,7 @@ public class ShuffleboardSystem {
         return additionalValueOutput;
     }
 
-    /**
-     * @return the pID
-     */
-    public NetworkTableEntry getPID() {
-        return PID;
-    }
-    /**
-     * @param pID the pID to set
-     */
-    public void setPID(NetworkTableEntry pID) {
-        PID = pID;
-    }
+
 
     /**
      * @return the p

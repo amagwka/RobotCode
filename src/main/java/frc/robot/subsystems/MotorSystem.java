@@ -78,6 +78,22 @@ public class MotorSystem {
         backMotor.set(backSpeed);
     }
 
+    public void holonomicDrive(double x, double y, double z,double forwardShift) {
+        double rightSpeed = x * 0.5 - Math.sqrt(3) / 2 * y + z + forwardShift;
+        double leftSpeed = x * 0.5 + Math.sqrt(3) / 2 * y + z + forwardShift;
+        double backSpeed = -x + z;
+
+        double max = Math.max(Math.max(Math.abs(rightSpeed), Math.abs(leftSpeed)), Math.abs(backSpeed));
+        if (max > 1) {
+            rightSpeed /= max;
+            leftSpeed /= max;
+            backSpeed /= max;
+        }
+        leftMotor.set(leftSpeed);
+        rightMotor.set(rightSpeed);
+        backMotor.set(backSpeed);
+    }
+
     public double getLeftEncoderDistance() {
         return leftEncoder.getRaw();
     }

@@ -5,10 +5,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.RobotContainer;
 
-public class RotateEncoder extends CommandBase {
+public class StabilizeR extends CommandBase {
 
     private double setpointYaw;
-    private boolean debug;
 
     private PIDController pidZAxis;
 
@@ -17,9 +16,7 @@ public class RotateEncoder extends CommandBase {
     private int counter = 0;
     private int counterAtSetpoint = 0;
 
-    public RotateEncoder(double setpointYawArg, double epsilonYaw, boolean debug) {
-        setpointYaw = setpointYawArg;
-        this.debug = debug;
+    public StabilizeR(double epsilonYaw) {
         addRequirements(RobotContainer.train);
         pidZAxis = new PIDController(0.13, 0.0, 0.00);
         pidZAxis.setTolerance(epsilonYaw);
@@ -29,35 +26,21 @@ public class RotateEncoder extends CommandBase {
 
     @Override
     public void initialize() {
+        setpointYaw=RobotContainer.train.getSensorSystem().getYaw();
         pidZAxis.setSetpoint(setpointYaw);
     }
 
     @Override
     public void execute() {
-        double currentSetpointYaw = getCurrentSetpointYaw();
-        updateYawAndPIDIfNecessary(currentSetpointYaw);
-
         double angle = RobotContainer.train.getSensorSystem().getAngle();
         checkForAngleStability(angle);
 
         out = pidZAxis.calculate(angle, setpointYaw);
         drive();
 
-        updateDebugInfoIfNecessary(angle);
         previousAngle = angle;
     }
 
-    private double getCurrentSetpointYaw() {
-        return debug ? RobotContainer.train.getShuffleboardSystem().getAdditionalValueOutput().getDouble(0) : setpointYaw;
-    }
-
-    private void updateYawAndPIDIfNecessary(double currentSetpointYaw) {
-        if (debug && setpointYaw != currentSetpointYaw) {
-            setpointYaw = currentSetpointYaw;
-            pidZAxis.setSetpoint(setpointYaw);
-        }
-        updatePID();
-    }
 
     private void checkForAngleStability(double angle) {
         if (Math.abs(angle - previousAngle) <= 1) {
@@ -72,14 +55,10 @@ public class RotateEncoder extends CommandBase {
     }
 
     private void drive() {
+        //RobotContainer.train.getMotorSystem().setMotorSpeeds(leftSpeed, rightSpeed, 0);
         RobotContainer.train.getMotorSystem().holonomicDrive(0.0, 0.0, MathUtil.clamp(out, -0.4, 0.4));
     }
 
-    private void updateDebugInfoIfNecessary(double angle) {
-        if (debug)
-            RobotContainer.train.getShuffleboardSystem()
-                    .updateTestString(String.format("S: %.2f O: %.2f A: %.2f", setpointYaw, out, angle));
-    }
 
     @Override
     public void end(boolean interrupted) {
@@ -100,7 +79,7 @@ public class RotateEncoder extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (pidZAxis.atSetpoint() && !debug) {
+        if (pidZAxis.atSetpoint() ) {
             counterAtSetpoint++;
             return counterAtSetpoint >= 10;
         }

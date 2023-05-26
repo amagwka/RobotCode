@@ -8,7 +8,8 @@ public class Autonomous extends SequentialCommandGroup
     {
         addCommands(
           new ResetAll(),
-        new ForwardEncoder(0, 1,true)
+          new ForwardEncoder(10, 2, false)
+          //new ServoAuto(0, 180)
         /*new ForwardEncoder(732, 1,false),
         new RotateEncoder(180, 1,false),
         new ForwardEncoder(732, 1,false),

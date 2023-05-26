@@ -154,7 +154,7 @@ public class Drive extends CommandBase {
          * train.setMotor2Speed(((0.5*inputLeftX)+(1.2247448714*inputLeftY)+inputRightY)
          * /(inputLeftB+0.7));
          */
-        train.getMotorSystem().holonomicDrive(inputLeftX/3, inputLeftY/3, inputRightY/3);
+        train.getMotorSystem().holonomicDrive(inputLeftX, inputLeftY, inputRightY);
         /*
          * train.setMotor0Speed(0.5 * inputLeftX - 0.866 * inputLeftY + inputRightY);
          * train.setMotor1Speed(0.5 * inputLeftX + 0.866 * inputLeftY + inputRightY);
