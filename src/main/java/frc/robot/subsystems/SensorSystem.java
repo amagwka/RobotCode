@@ -10,12 +10,14 @@ import com.studica.frc.Cobra;
 public class SensorSystem {
     private Cobra cobra;
     private Ultrasonic sonic;
-    private AnalogInput sharp;
+    private AnalogInput sharp1;
+    private AnalogInput sharp2;
     private AHRS gyro;
 
     public SensorSystem() {
         this.cobra = new Cobra();
-        this.sharp = new AnalogInput(C.SHARP);
+        this.sharp1 = new AnalogInput(0);
+        this.sharp2 = new AnalogInput(1);
         this.sonic = new Ultrasonic(10, 11);
         this.sonic.setAutomaticMode(true);
         this.gyro = new AHRS(SPI.Port.kMXP);
@@ -29,8 +31,11 @@ public class SensorSystem {
         return cobra.getVoltage(channel);
     }
 
-    public double getIRDistance() {
-        return (Math.pow(sharp.getAverageVoltage(), -1.2045) * 27.726);
+    public double getIR1Distance() {
+        return (Math.pow(sharp1.getAverageVoltage(), -1.2045) * 27.726);
+    }
+    public double getIR2Distance() {
+        return (Math.pow(sharp2.getAverageVoltage(), -1.2045) * 27.726);
     }
     public double getXAccel() {
         return gyro.getDisplacementX();

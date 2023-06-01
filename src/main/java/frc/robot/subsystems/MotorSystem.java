@@ -78,10 +78,27 @@ public class MotorSystem {
         backMotor.set(backSpeed);
     }
 
-    public void holonomicDrive(double x, double y, double z,double forwardShift) {
-        double rightSpeed = x * 0.5 - Math.sqrt(3) / 2 * y + z + forwardShift;
-        double leftSpeed = x * 0.5 + Math.sqrt(3) / 2 * y + z + forwardShift;
-        double backSpeed = -x + z;
+    public double getLeftEncoderDistance() {
+        return leftEncoder.getEncoderDistance();
+    }
+
+    public double getRightEncoderDistance() {
+        return rightEncoder.getEncoderDistance();
+    }
+
+    public double getBackEncoderDistance() {
+        return backEncoder.getEncoderDistance();
+    }
+
+    public double getAverageSideEncoderDistance() {
+        double sideEncoderDist = (getLeftEncoderDistance() - getRightEncoderDistance()) / 2.0;
+        return (sideEncoderDist + getBackEncoderDistance()) / 2.0;
+    }
+
+    public void holonomicDrive(double x, double y, double z, double forwardShift, double sideShift) {
+        double rightSpeed = x * 0.5 - Math.sqrt(3) / 2 * y + z + forwardShift + sideShift;
+        double leftSpeed = x * 0.5 + Math.sqrt(3) / 2 * y + z + forwardShift + sideShift;
+        double backSpeed = -x + z - sideShift;
 
         double max = Math.max(Math.max(Math.abs(rightSpeed), Math.abs(leftSpeed)), Math.abs(backSpeed));
         if (max > 1) {
@@ -94,20 +111,8 @@ public class MotorSystem {
         backMotor.set(backSpeed);
     }
 
-    public double getLeftEncoderDistance() {
-        return leftEncoder.getRaw();
-    }
-
-    public double getRightEncoderDistance() {
-        return rightEncoder.getRaw() * -1;
-    }
-
-    public double getBackEncoderDistance() {
-        return backEncoder.getRaw();
-    }
-
     public double getAverageForwardEncoderDistance() {
-        return (getLeftEncoderDistance() + getRightEncoderDistance()) * 0.5;
+        return (getLeftEncoderDistance() - getRightEncoderDistance()) * 0.5;
     }
 
     public void resetLeftEncoder() {

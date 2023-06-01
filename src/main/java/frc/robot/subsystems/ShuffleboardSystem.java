@@ -13,10 +13,12 @@ public class ShuffleboardSystem {
     private NetworkTableEntry forwardForceEntry;
     private NetworkTableEntry additionalValueOutput;
     private NetworkTableEntry ultrasonic;
+    private NetworkTableEntry ir;
     private NetworkTableEntry P;
     private NetworkTableEntry I;
     private NetworkTableEntry D;
     private NetworkTableEntry additionalTextOutput;
+    private NetworkTableEntry ATO;
     private NetworkTableEntry navXEntry;
 
     public ShuffleboardSystem() {
@@ -25,12 +27,14 @@ public class ShuffleboardSystem {
         this.rightEncoderEntry = tab.add("Right Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.backEncoderEntry = tab.add("Back Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.ultrasonic = tab.add("Ultrasonic", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
+        //this.ir = tab.add("IR", "...").withWidget(BuiltInWidgets.kTextView).getEntry();
         this.forwardForceEntry = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.additionalValueOutput = tab.add("Test value", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
         this.P = tab.add("P", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
         this.I = tab.add("I", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
         this.D = tab.add("D", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
         this.additionalTextOutput = tab.add("Text value", "None at this moment :)").getEntry();
+        this.ATO = tab.add("Text value2", "None at this moment :)").getEntry();
         this.navXEntry = tab.add("NavX Yaw", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
     }
 
@@ -58,8 +62,12 @@ public class ShuffleboardSystem {
     public NetworkTableEntry getAdditionalValueOutput() {
         return additionalValueOutput;
     }
-
-
+    /**
+     * @return the aTO
+     */
+    public NetworkTableEntry getATO() {
+        return ATO;
+    }
 
     /**
      * @return the p
@@ -86,4 +94,11 @@ public class ShuffleboardSystem {
     public void updateTestString(String text) {
         additionalTextOutput.setString(text);
     }
+    public void updateTest2String(String text) {
+        ATO.setString(text);
+    }
+    /*
+	public void setIR(double ir1, double ir2) {
+        ir.setString(String.format("1: %.1f 2: %.1f", ir1, ir2));
+	}*/
 }

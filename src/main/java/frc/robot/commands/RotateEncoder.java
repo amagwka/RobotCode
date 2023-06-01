@@ -7,29 +7,39 @@ import frc.robot.RobotContainer;
 
 public class RotateEncoder extends CommandBase {
 
-    private double setpointYaw;
+    private static final double PID_KP = 0.11;
+    private static final double PID_KI = 0.0;
+    private static final double PID_KD = 0.0;
+    private static final double INTEGRAL_ENABLED_I = 0.01;
+    private static final double INTEGRATOR_RANGE_MIN = -0.4;
+    private static final double INTEGRATOR_RANGE_MAX = 0.4;
+    private static final int ANGLE_STABILITY_THRESHOLD = 50;
+    private static final int AT_SETPOINT_THRESHOLD = 10;
+    private static final double DRIVE_MIN = 0.0;
+    private static final double DRIVE_MAX = 0.4;
+
     private boolean debug;
-
     private PIDController pidZAxis;
-
     private double out;
     private double previousAngle;
     private int counter = 0;
+    int num=0;
     private int counterAtSetpoint = 0;
 
-    public RotateEncoder(double setpointYawArg, double epsilonYaw, boolean debug) {
-        setpointYaw = setpointYawArg;
+    public RotateEncoder(double setpointYawArg, double epsilonYaw, boolean debug,int num) {
         this.debug = debug;
         addRequirements(RobotContainer.train);
-        pidZAxis = new PIDController(0.13, 0.0, 0.00);
+        this.num = num;
+        pidZAxis = new PIDController(PID_KP, PID_KI, PID_KD);
+        pidZAxis.setSetpoint(setpointYawArg);
         pidZAxis.setTolerance(epsilonYaw);
-        pidZAxis.setIntegratorRange(-0.2, 0.2);
-        previousAngle = RobotContainer.train.getSensorSystem().getAngle();
+        pidZAxis.setIntegratorRange(INTEGRATOR_RANGE_MIN, INTEGRATOR_RANGE_MAX);
     }
 
     @Override
     public void initialize() {
-        pidZAxis.setSetpoint(setpointYaw);
+        RobotContainer.train.getShuffleboardSystem().getATO().setString(String.format("Rotate %d", num));
+        previousAngle = RobotContainer.train.getSensorSystem().getAngle();
     }
 
     @Override
@@ -40,7 +50,7 @@ public class RotateEncoder extends CommandBase {
         double angle = RobotContainer.train.getSensorSystem().getAngle();
         checkForAngleStability(angle);
 
-        out = pidZAxis.calculate(angle, setpointYaw);
+        out = pidZAxis.calculate(angle);
         drive();
 
         updateDebugInfoIfNecessary(angle);
@@ -48,13 +58,12 @@ public class RotateEncoder extends CommandBase {
     }
 
     private double getCurrentSetpointYaw() {
-        return debug ? RobotContainer.train.getShuffleboardSystem().getAdditionalValueOutput().getDouble(0) : setpointYaw;
+        return debug ? RobotContainer.train.getShuffleboardSystem().getAdditionalValueOutput().getDouble(0) : pidZAxis.getSetpoint();
     }
 
     private void updateYawAndPIDIfNecessary(double currentSetpointYaw) {
-        if (debug && setpointYaw != currentSetpointYaw) {
-            setpointYaw = currentSetpointYaw;
-            pidZAxis.setSetpoint(setpointYaw);
+        if (debug) {
+            pidZAxis.setSetpoint(currentSetpointYaw);
         }
         updatePID();
     }
@@ -65,20 +74,20 @@ public class RotateEncoder extends CommandBase {
         } else {
             counter = 0;
         }
-        if (counter >= 10) {
+        if (counter >= ANGLE_STABILITY_THRESHOLD) {
             enableIntegral();
             counter = 0;
         }
     }
 
     private void drive() {
-        RobotContainer.train.getMotorSystem().holonomicDrive(0.0, 0.0, MathUtil.clamp(out, -0.4, 0.4));
+        RobotContainer.train.getMotorSystem().holonomicDrive(DRIVE_MIN, DRIVE_MIN, MathUtil.clamp(out, - DRIVE_MAX, DRIVE_MAX));
     }
 
     private void updateDebugInfoIfNecessary(double angle) {
-        if (debug)
+        //if (debug)
             RobotContainer.train.getShuffleboardSystem()
-                    .updateTestString(String.format("S: %.2f O: %.2f A: %.2f", setpointYaw, out, angle));
+                    .updateTestString(String.format("S: %.2f O: %.2f A: %.2f", pidZAxis.getSetpoint(), out, angle));
     }
 
     @Override
@@ -95,14 +104,14 @@ public class RotateEncoder extends CommandBase {
 
     private void enableIntegral() {
         pidZAxis.reset();
-        pidZAxis.setI(0.01);
+        pidZAxis.setI(INTEGRAL_ENABLED_I);
     }
 
     @Override
     public boolean isFinished() {
         if (pidZAxis.atSetpoint() && !debug) {
             counterAtSetpoint++;
-            return counterAtSetpoint >= 10;
+            return counterAtSetpoint >= AT_SETPOINT_THRESHOLD;
         }
         counterAtSetpoint = 0;
         return false;

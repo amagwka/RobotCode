@@ -30,8 +30,8 @@ public class Training extends SubsystemBase {
         if (x % 10==0) {
             shuffleboardSystem.updateEncoderEntries(motorSystem.getLeftEncoderDistance(), motorSystem.getRightEncoderDistance(), motorSystem.getBackEncoderDistance());
             shuffleboardSystem.updateForwardForceEntry(motorSystem.getAverageForwardEncoderDistance());
-            shuffleboardSystem.updateNavXEntry(sensorSystem.getXAccel());
-            shuffleboardSystem.setUltrasonic(sensorSystem.getIRDistance());
+            shuffleboardSystem.updateNavXEntry(sensorSystem.getAngle());
+            //shuffleboardSystem.setIR(sensorSystem.getIR1Distance(), sensorSystem.getIR2Distance());
             shuffleboardSystem.updateTestString(String.format("1: %d 2: %d 3: %d 4: %d", sensorSystem.getCobraRawValue(0),sensorSystem.getCobraRawValue(1),sensorSystem.getCobraRawValue(2),sensorSystem.getCobraRawValue(3)));
         }
         x++;

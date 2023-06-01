@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.RobotContainer;
 
-public class ForwardEncoder extends CommandBase {
+public class SideEncoder extends CommandBase {
 
     private double setpoint = 0;
 
@@ -26,7 +26,7 @@ public class ForwardEncoder extends CommandBase {
     private boolean firstExecution = true;
     private double startTime;
 
-    public ForwardEncoder(double setpoint, double epsilon, boolean debug,int num) {
+    public SideEncoder(double setpoint, double epsilon, boolean debug,int num) {
         this.setpoint = setpoint * 20;
         this.debug = debug;
 
@@ -50,17 +50,17 @@ public class ForwardEncoder extends CommandBase {
         pidZAxis.setSetpoint(setpointYaw);
         startTime = Timer.getFPGATimestamp();
         firstExecution = true;
-        RobotContainer.train.getShuffleboardSystem().getATO().setString(String.format("Forward %d", num));
+        RobotContainer.train.getShuffleboardSystem().getATO().setString(String.format("Side %d", num));
     }
 
     @Override
     public void execute() {
         double currentTime = Timer.getFPGATimestamp();
-        double currentEncoderValue = RobotContainer.train.getMotorSystem().getAverageForwardEncoderDistance();
+        double currentEncoderValue = RobotContainer.train.getMotorSystem().getAverageSideEncoderDistance();
 
         updateSetpointIfNeeded(currentTime, currentEncoderValue);
         checkAndCorrectStuckEncoder(currentEncoderValue);
-        executePIDControl(currentEncoderValue);
+        executePIDControl(currentEncoderValue, RobotContainer.train.getSensorSystem().getAngle());
     }
 
     // Called once the command ends or is interrupted
@@ -96,16 +96,15 @@ public class ForwardEncoder extends CommandBase {
         lastEncoderValue = currentEncoderValue;
     }
 
-    void executePIDControl(double currentEncoderValue) {
+    void executePIDControl(double currentEncoderValue, double currentAngle) {
         double outY = pidYAxis.calculate(currentEncoderValue, setpoint);
-        double outZ = pidZAxis.calculate(RobotContainer.train.getSensorSystem().getAngle(), pidZAxis.getSetpoint());
+        double outZ = pidZAxis.calculate(RobotContainer.train.getSensorSystem().getAngle());
 
-        RobotContainer.train.getMotorSystem().holonomicDrive(0.0, MathUtil.clamp(outY, -0.6, 0.6), 0.0,
-                MathUtil.clamp(outZ, -0.6, 0.6), 0.0);
+        RobotContainer.train.getMotorSystem().holonomicDrive(MathUtil.clamp(outY, -0.6, 0.6) ,0.0 , 0.0, 0.0,  MathUtil.clamp(outZ, -0.6, 0.6));
 
         if (debug) {
             RobotContainer.train.getShuffleboardSystem().updateTestString(String.format("S: %.1f SY: %.1f D: %.1f DY: %.1f",
-                    setpoint, setpointYaw, setpoint - currentEncoderValue, setpointYaw - RobotContainer.train.getSensorSystem().getAngle()));
+                    setpoint, setpointYaw,  currentEncoderValue, RobotContainer.train.getSensorSystem().getAngle()));
         }
     }
 
