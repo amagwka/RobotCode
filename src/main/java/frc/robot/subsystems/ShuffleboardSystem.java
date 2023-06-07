@@ -97,8 +97,7 @@ public class ShuffleboardSystem {
     public void updateTest2String(String text) {
         ATO.setString(text);
     }
-    /*
 	public void setIR(double ir1, double ir2) {
         ir.setString(String.format("1: %.1f 2: %.1f", ir1, ir2));
-	}*/
+	}
 }
