@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
-public class ShuffleboardSystem {
+ public class ShuffleboardSystem {
     public ShuffleboardTab tab;
     private NetworkTableEntry leftEncoderEntry;
     private NetworkTableEntry rightEncoderEntry;
@@ -27,7 +27,7 @@ public class ShuffleboardSystem {
         this.rightEncoderEntry = tab.add("Right Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.backEncoderEntry = tab.add("Back Encoder", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.ultrasonic = tab.add("Ultrasonic", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
-        //this.ir = tab.add("IR", "...").withWidget(BuiltInWidgets.kTextView).getEntry();
+        this.ir = tab.add("IR", "...").withWidget(BuiltInWidgets.kTextView).getEntry();
         this.forwardForceEntry = tab.add("Resulted Forward", 0).withWidget(BuiltInWidgets.kNumberBar).getEntry();
         this.additionalValueOutput = tab.add("Test value", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
         this.P = tab.add("P", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
