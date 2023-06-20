@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 public class Training extends SubsystemBase {
     private MotorSystem motorSystem;
@@ -27,13 +28,16 @@ public class Training extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (x % 10==0) {
+        if (x % 99999==0) {
             shuffleboardSystem.updateEncoderEntries(motorSystem.getLeftEncoderDistance(), motorSystem.getRightEncoderDistance(), motorSystem.getBackEncoderDistance());
             shuffleboardSystem.updateForwardForceEntry(motorSystem.getAverageForwardEncoderDistance());
             shuffleboardSystem.updateNavXEntry(sensorSystem.getAngle());
             shuffleboardSystem.setIR(sensorSystem.getIR1Distance(), sensorSystem.getIR2Distance());
             shuffleboardSystem.updateTestString(String.format("1: %d 2: %d 3: %d 4: %d", sensorSystem.getCobraRawValue(0),sensorSystem.getCobraRawValue(1),sensorSystem.getCobraRawValue(2),sensorSystem.getCobraRawValue(3)));
+            //shuffleboardSystem.updateTest2String(RobotContainer.i);
         }
+        shuffleboardSystem.updateTest2String(String.format("%f", sensorSystem.gyro.getWorldLinearAccelX()));
+
         x++;
     }
 }

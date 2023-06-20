@@ -12,7 +12,7 @@ public class SensorSystem {
     private Ultrasonic sonic;
     private AnalogInput sharp1;
     private AnalogInput sharp2;
-    private AHRS gyro;
+    public AHRS gyro;
 
     public SensorSystem() {
         this.cobra = new Cobra();

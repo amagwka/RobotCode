@@ -29,7 +29,7 @@ public class ForwardIR extends CommandBase {
     public ForwardIR(double setpoint, double epsilon, boolean debug,int num) {
         this.setpoint = setpoint * 20;
         this.debug = debug;
-
+        
         this.num = num;
 
         addRequirements(RobotContainer.train);

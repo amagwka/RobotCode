@@ -10,6 +10,7 @@ public class RobotContainer {
   public static ShuffleboardSystem shuffleboardSystem;
   public static MotorSystem motorSystem;
   public static OI oi;
+  public static String i="";
   //public static OMS oms;
 
   public RobotContainer(MotorSystem motorSystem,SensorSystem sensorSystem,ShuffleboardSystem shuffleboardSystem) {
