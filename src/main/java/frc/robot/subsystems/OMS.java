@@ -9,23 +9,23 @@ import frc.robot.C;
 
 public class OMS extends SubsystemBase {
 
-    private TitanQuad R_lift;
+    //private TitanQuad R_lift;
     private Servo gripper;
-    private ServoContinuous lift;
+    private TitanQuad lift;
 
-    private TitanQuadEncoder R_liftEncoder;
+    private TitanQuadEncoder liftEncoder;
 
     public OMS() {
-        R_lift = new TitanQuad(C.TITAN_ID, C.MOTOR_ROTATE_LIFT);
+        lift = new TitanQuad(C.TITAN_ID, C.MOTOR_ROTATE_LIFT);
         gripper = new Servo(C.SERVO_GRIPPER);
         
-        lift = new ServoContinuous(C.SERVO_LIFT);
+        //lift = new ServoContinuous(C.SERVO_LIFT);
 
-        R_liftEncoder = new TitanQuadEncoder(R_lift, C.MOTOR_ROTATE_LIFT, 1); //0.429179
+        liftEncoder = new TitanQuadEncoder(lift, C.MOTOR_ROTATE_LIFT, 1); //0.429179
     }
 
     public void setLiftSpeed(double speed) {
-        lift.setSpeed(speed);
+        lift.set(speed);
     }
 
     public void setGripperPosition(double degrees) {
@@ -33,7 +33,7 @@ public class OMS extends SubsystemBase {
     }
 
     public void resetEncoders() {
-        R_liftEncoder.reset();
+        liftEncoder.reset();
     }
 
     @Override
@@ -41,6 +41,6 @@ public class OMS extends SubsystemBase {
     }
 
 	public void setGripper2Position(double r_LiftSpeed) {
-        
+
 	}
 }

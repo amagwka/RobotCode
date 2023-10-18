@@ -139,14 +139,14 @@ public class Drive extends CommandBase {
         r_gripperDegrees=MathUtil.clamp(r_gripperDegrees, 0, 180);
         liftSpeed=MathUtil.clamp(liftSpeed, -1, 1);
 
-        liftSpeed /= 3;
+        liftSpeed /= 2;
         r_LiftSpeed /= 2;
         RightBumper.setDouble(r_gripperDegrees);
-        oms.setGripperPosition(r_gripperDegrees);
+        //oms.setGripperPosition(r_gripperDegrees);
         oms.setLiftSpeed(liftSpeed);
-        oms.setGripper2Position(r_LiftSpeed);
+        //oms.setGripper2Position(r_LiftSpeed);
         // getMotorSpeeds(inputLeftX,inputLeftY,inputRightY);
-
+        
         /*
          * train.setMotor0Speed((-inputLeftX+inputRightY)/(inputLeftB+0.7));
          * train.setMotor1Speed(((0.5*inputLeftX)-(1.2247448714*inputLeftY)+inputRightY)
