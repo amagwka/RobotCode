@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.RobotContainer;
 import frc.robot.gamepad.OI;
+import frc.robot.subsystems.OMS;
 import frc.robot.subsystems.Training;
 
 public class Drive extends CommandBase {
@@ -13,7 +14,7 @@ public class Drive extends CommandBase {
      * Bring in Subsystem and Gamepad code
      */
     private static final Training train = RobotContainer.train;
-    //private static final OMS oms = RobotContainer.oms;
+    private static final OMS oms = RobotContainer.oms;
     private static final OI oi = RobotContainer.oi;
 
     /**
@@ -141,9 +142,9 @@ public class Drive extends CommandBase {
         liftSpeed /= 3;
         r_LiftSpeed /= 2;
         RightBumper.setDouble(r_gripperDegrees);
-        //oms.setGripperPosition(r_gripperDegrees);
-        //oms.setLiftSpeed(liftSpeed);
-        //oms.setGripper2Position(r_LiftSpeed);
+        oms.setGripperPosition(r_gripperDegrees);
+        oms.setLiftSpeed(liftSpeed);
+        oms.setGripper2Position(r_LiftSpeed);
         // getMotorSpeeds(inputLeftX,inputLeftY,inputRightY);
 
         /*

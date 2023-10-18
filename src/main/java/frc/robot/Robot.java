@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer(new MotorSystem(1, 2, 0), new SensorSystem(), new ShuffleboardSystem());
+  m_robotContainer = new RobotContainer(new MotorSystem(2, 0, 3), new SensorSystem(), new ShuffleboardSystem());
     drive = new Drive();
     auto = new Autonomous();
 
@@ -88,16 +88,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    try {
-      BufferedReader reader = new BufferedReader(new FileReader("f.txt"));
-      
-      RobotContainer.i=reader.readLine();
-
-      reader.close();
-  } catch (IOException e) {
-      e.printStackTrace();
-  }
-
+    CommandScheduler.getInstance().schedule(drive);
   }
 
   @Override
@@ -106,6 +97,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    CommandScheduler.getInstance().cancelAll();
+/*
     try {
       BufferedWriter writer = new BufferedWriter(new FileWriter("f.txt"));
 
@@ -115,7 +108,7 @@ public class Robot extends TimedRobot {
       writer.close();
   } catch (IOException e) {
       e.printStackTrace();
-  }
+  }*/
     //CommandScheduler.getInstance().cancelAll();
   }
   @Override

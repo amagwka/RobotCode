@@ -39,4 +39,8 @@ public class OMS extends SubsystemBase {
     @Override
     public void periodic() {
     }
+
+	public void setGripper2Position(double r_LiftSpeed) {
+        
+	}
 }

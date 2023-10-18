@@ -11,11 +11,11 @@ public class RobotContainer {
   public static MotorSystem motorSystem;
   public static OI oi;
   public static String i="";
-  //public static OMS oms;
+  public static OMS oms;
 
   public RobotContainer(MotorSystem motorSystem,SensorSystem sensorSystem,ShuffleboardSystem shuffleboardSystem) {
     train = new Training(motorSystem, sensorSystem, shuffleboardSystem);
-    //oms = new OMS();
+    oms = new OMS();
     oi = new OI();
   }
 }
