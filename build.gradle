@@ -44,6 +44,8 @@ def includeDesktopSupport = false
 // Also defines JUnit 4.
 dependencies {
     implementation wpi.deps.wpilib()
+    implementation files('lib/gson-2.8.8.jar')
+
     nativeZip wpi.deps.wpilibJni(wpi.platforms.raspbian)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 

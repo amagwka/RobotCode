@@ -7,13 +7,13 @@
 
 package frc.robot;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.BufferedReader;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
@@ -22,10 +22,8 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
@@ -51,7 +49,7 @@ public class Robot extends TimedRobot {
   m_robotContainer = new RobotContainer(new MotorSystem(2, 0, 3), new SensorSystem(), new ShuffleboardSystem());
     drive = new Drive();
     auto = new Autonomous();
-
+/*
     new Thread(() -> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
       camera.setResolution(640, 480);
@@ -69,7 +67,7 @@ public class Robot extends TimedRobot {
         // Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
         outputStream.putFrame(source);
       }
-    }).start();
+    }).start();*/
   }
 
   @Override
@@ -98,7 +96,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
-/*
     try {
       BufferedWriter writer = new BufferedWriter(new FileWriter("f.txt"));
 
@@ -108,10 +105,23 @@ public class Robot extends TimedRobot {
       writer.close();
   } catch (IOException e) {
       e.printStackTrace();
-  }*/
+  }
+
+  try {
+    BufferedReader reader = new BufferedReader(new FileReader("f.txt"));
+    String line;
+    line = reader.readLine();
+    DriverStation.reportWarning(line,false );
+    System.out.println(line);
+    reader.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
     //CommandScheduler.getInstance().cancelAll();
   }
   @Override
   public void testPeriodic() {
+    
   }
 }

@@ -27,7 +27,7 @@ public class ForwardEncoder extends CommandBase {
     private double startTime;
 
     public ForwardEncoder(double setpoint, double epsilon, boolean debug,int num) {
-        this.setpoint = setpoint * 20;
+        this.setpoint = setpoint * 40;
         this.debug = debug;
 
         this.num = num;
@@ -36,7 +36,7 @@ public class ForwardEncoder extends CommandBase {
 
         pidYAxis = new PIDController(0.012, 0.0, 0.0);
         pidYAxis.setTolerance(epsilon);
-        pidYAxis.setIntegratorRange(-0.4, 0.4);
+        pidYAxis.setIntegratorRange(-0.5, 0.5);
 
         pidZAxis = new PIDController(0.10, 0.0, 0.0);
         pidZAxis.setIntegratorRange(-0.2, 0.2);
@@ -66,8 +66,8 @@ public class ForwardEncoder extends CommandBase {
     // Called once the command ends or is interrupted
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
         RobotContainer.train.getMotorSystem().resetEncoders();
+        RobotContainer.train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
         RobotContainer.train.getSensorSystem().resetGyro();
         pidYAxis.close();
         pidZAxis.close();
@@ -84,9 +84,9 @@ public class ForwardEncoder extends CommandBase {
     }
 
     void checkAndCorrectStuckEncoder(double currentEncoderValue) {
-        if (currentEncoderValue == lastEncoderValue && !pidYAxis.atSetpoint()) {
+        if (currentEncoderValue == lastEncoderValue && !pidYAxis.atSetpoint() && pidYAxis.getI() != 0.15) {
             encoderStuckCounter++;
-            if (encoderStuckCounter >= 10) {
+            if (encoderStuckCounter >= 5) {
                 enableIntegral();
                 encoderStuckCounter = 0;
             }
@@ -100,8 +100,8 @@ public class ForwardEncoder extends CommandBase {
         double outY = pidYAxis.calculate(currentEncoderValue, setpoint);
         double outZ = pidZAxis.calculate(RobotContainer.train.getSensorSystem().getAngle(), pidZAxis.getSetpoint());
 
-        RobotContainer.train.getMotorSystem().holonomicDrive(0.0, MathUtil.clamp(outY, -0.6, 0.6), 0.0,
-                MathUtil.clamp(outZ, -0.6, 0.6), 0.0);
+        RobotContainer.train.getMotorSystem().holonomicDrive(0.0, MathUtil.clamp(outY, -0.55, 0.55), 0.0,
+                MathUtil.clamp(outZ, -0.4, 0.4), 0.0);
 
         if (debug) {
             RobotContainer.train.getShuffleboardSystem().updateTestString(String.format("S: %.1f SY: %.1f D: %.1f DY: %.1f",
@@ -118,6 +118,7 @@ public class ForwardEncoder extends CommandBase {
     void enableIntegral() {
         pidYAxis.reset();
         pidYAxis.setI(0.15);
+        System.out.println("Enabled I 0.15");
     }
 
     @Override

@@ -8,7 +8,7 @@ import frc.robot.RobotContainer;
 public class RotateEncoder extends CommandBase {
 
     private static final double PID_KP = 0.11;
-    private static final double PID_KI = 0.0;
+    private static final double PID_KI = 0.001;
     private static final double PID_KD = 0.0;
     private static final double INTEGRAL_ENABLED_I = 0.01;
     private static final double INTEGRATOR_RANGE_MIN = -0.4;
@@ -112,8 +112,10 @@ public class RotateEncoder extends CommandBase {
         if (pidZAxis.atSetpoint() && !debug) {
             counterAtSetpoint++;
             return counterAtSetpoint >= AT_SETPOINT_THRESHOLD;
+        }else{
+            counterAtSetpoint = 0;
         }
-        counterAtSetpoint = 0;
+        
         return false;
     }
 }

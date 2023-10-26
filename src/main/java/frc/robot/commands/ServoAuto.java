@@ -41,6 +41,6 @@ public class ServoAuto extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return i>=50;
+        return i>=100;
     }
 }

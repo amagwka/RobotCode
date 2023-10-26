@@ -5,17 +5,19 @@ import frc.robot.subsystems.Training;
 
 public class ResetAll extends CommandBase {
     public ResetAll() {
-
-    }
-
-    @Override
-    public void initialize() {
         
     }
 
     @Override
+    public void initialize() {
+        RobotContainer.train.getMotorSystem().resetEncoders();
+        RobotContainer.train.getSensorSystem().resetGyro();
+    }
+
+    @Override
     public void execute() {
-            
+        RobotContainer.train.getMotorSystem().resetEncoders();
+        RobotContainer.train.getSensorSystem().resetGyro();
     }
     @Override
     public void end(boolean interrupted) {

@@ -9,9 +9,9 @@ public class MotorSystem {
     private TitanQuad leftMotor;
     private TitanQuad rightMotor;
     private TitanQuad backMotor;
-    private TitanQuadEncoder leftEncoder;
-    private TitanQuadEncoder rightEncoder;
-    private TitanQuadEncoder backEncoder;
+    public TitanQuadEncoder leftEncoder;
+    public TitanQuadEncoder rightEncoder;
+    public TitanQuadEncoder backEncoder;
 
     public MotorSystem(int leftMotorID, int rightMotorID, int backMotorID) {
         this.leftMotor = new TitanQuad(C.TITAN_ID, leftMotorID);
@@ -66,17 +66,46 @@ public class MotorSystem {
         double rightSpeed = x * 0.5 - Math.sqrt(3) / 2 * y + z;
         double leftSpeed = x * 0.5 + Math.sqrt(3) / 2 * y + z;
         double backSpeed = -x + z;
-
+    
+        // Normalize speeds if they exceed 1
         double max = Math.max(Math.max(Math.abs(rightSpeed), Math.abs(leftSpeed)), Math.abs(backSpeed));
         if (max > 1) {
             rightSpeed /= max;
             leftSpeed /= max;
             backSpeed /= max;
         }
+    /*
+        // Get encoder speeds and directions
+        double leftEncoderSpeed = leftEncoder.getSpeed();
+        double rightEncoderSpeed = rightEncoder.getSpeed();
+        boolean leftDirection = leftEncoder.getDirection();
+        boolean rightDirection = rightEncoder.getDirection();
+    
+        // Compute absolute ratios
+        double leftRatio = Math.abs(leftEncoderSpeed / leftSpeed);
+        double rightRatio = Math.abs(rightEncoderSpeed / rightSpeed);
+    
+        // Adjust speeds to maintain equivalent ratios, if necessary
+        if (leftRatio != rightRatio) {
+            if (leftRatio > rightRatio) {
+                leftSpeed = (rightRatio / leftRatio) * leftSpeed;
+            } else {
+                rightSpeed = (leftRatio / rightRatio) * rightSpeed;
+            }
+        }
+    
+        // Ensure directions match, adjusting speed sign if necessary
+        if (leftDirection && leftSpeed < 0) leftSpeed = -leftSpeed;
+        if (!leftDirection && leftSpeed > 0) leftSpeed = -leftSpeed;
+        if (rightDirection && rightSpeed < 0) rightSpeed = -rightSpeed;
+        if (!rightDirection && rightSpeed > 0) rightSpeed = -rightSpeed;
+    */
+        // Set motor speeds
         leftMotor.set(leftSpeed);
         rightMotor.set(rightSpeed);
         backMotor.set(backSpeed);
     }
+    
 
     public double getLeftEncoderDistance() {
         return leftEncoder.getEncoderDistance();

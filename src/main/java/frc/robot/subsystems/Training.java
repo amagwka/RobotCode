@@ -28,15 +28,16 @@ public class Training extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (x % 99999==0) {
+        if (x % 10==0) {
             shuffleboardSystem.updateEncoderEntries(motorSystem.getLeftEncoderDistance(), motorSystem.getRightEncoderDistance(), motorSystem.getBackEncoderDistance());
             shuffleboardSystem.updateForwardForceEntry(motorSystem.getAverageForwardEncoderDistance());
             shuffleboardSystem.updateNavXEntry(sensorSystem.getAngle());
             shuffleboardSystem.setIR(sensorSystem.getIR1Distance(), sensorSystem.getIR2Distance());
-            shuffleboardSystem.updateTestString(String.format("1: %d 2: %d 3: %d 4: %d", sensorSystem.getCobraRawValue(0),sensorSystem.getCobraRawValue(1),sensorSystem.getCobraRawValue(2),sensorSystem.getCobraRawValue(3)));
+            //shuffleboardSystem.updateTestString(String.format("1: %d 2: %d 3: %d 4: %d", sensorSystem.getCobraRawValue(0),sensorSystem.getCobraRawValue(1),sensorSystem.getCobraRawValue(2),sensorSystem.getCobraRawValue(3)));
+            shuffleboardSystem.updateTestString(String.format("1: %f 2: %f 3: %f",motorSystem.leftEncoder.getSpeed(),motorSystem.rightEncoder.getSpeed(),motorSystem.backEncoder.getSpeed()));
             //shuffleboardSystem.updateTest2String(RobotContainer.i);
         }
-        shuffleboardSystem.updateTest2String(String.format("%f", sensorSystem.gyro.getWorldLinearAccelX()));
+        //shuffleboardSystem.updateTest2String(String.format("%f", sensorSystem.gyro.getWorldLinearAccelX()));
 
         x++;
     }
