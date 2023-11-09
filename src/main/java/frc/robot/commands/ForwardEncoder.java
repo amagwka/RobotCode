@@ -11,9 +11,13 @@ public class ForwardEncoder extends CommandBase {
     private double setpoint = 0;
 
     private double setpointYaw = 0;
-    private boolean debug;
+    private boolean debug = false;
 
     PIDController pidYAxis;
+    PIDController pid1;
+    PIDController pid2;
+
+
     PIDController pidZAxis;
 
     int num=0;
@@ -21,14 +25,22 @@ public class ForwardEncoder extends CommandBase {
     private int atSetpointCounter = 0;
     private int encoderStuckCounter = 0;
 
+    private double INTEGRAL_ENABLED_I = 0.01;
+
+
     private double lastEncoderValue = 0.0;
+
+    private double acceleration = 0.0;
+    private double ACC_SPEED = 0.0;
 
     private boolean firstExecution = true;
     private double startTime;
 
-    public ForwardEncoder(double setpoint, double epsilon, boolean debug,int num) {
+    private boolean use_Zpid;
+
+    public ForwardEncoder(double setpoint, double epsilon, boolean use_Zpid,int num) {
         this.setpoint = setpoint * 40;
-        this.debug = debug;
+        this.use_Zpid = true;
 
         this.num = num;
 
@@ -38,16 +50,34 @@ public class ForwardEncoder extends CommandBase {
         pidYAxis.setTolerance(epsilon);
         pidYAxis.setIntegratorRange(-0.5, 0.5);
 
-        pidZAxis = new PIDController(0.10, 0.0, 0.0);
+
+        pid1 = new PIDController(0.012, 0.0, 0.0);
+        pid1.setTolerance(epsilon);
+        pid1.setIntegratorRange(-0.5, 0.5);
+
+        pid2 = new PIDController(0.012, 0.0, 0.0);
+        pid2.setTolerance(epsilon);
+        pid2.setIntegratorRange(-0.5, 0.5);
+
+
+        pidZAxis = new PIDController(0.05, 0.0, 0.0);
         pidZAxis.setIntegratorRange(-0.2, 0.2);
     }
 
     @Override
     public void initialize() {
-        pidYAxis.setSetpoint(setpoint);
-        pidYAxis.reset();
-        setpointYaw = RobotContainer.train.getSensorSystem().getAngle();
-        pidZAxis.setSetpoint(setpointYaw);
+        if (use_Zpid){
+            pidYAxis.setSetpoint(setpoint);
+            pidYAxis.reset();
+            setpointYaw = RobotContainer.train.getSensorSystem().getAngle();
+            pidZAxis.setSetpoint(setpointYaw);
+        }else{
+            pid1.setSetpoint(setpoint);
+            pid1.reset();
+            pid2.setSetpoint(-setpoint);
+            pid2.reset();
+
+        }
         startTime = Timer.getFPGATimestamp();
         firstExecution = true;
         RobotContainer.train.getShuffleboardSystem().getATO().setString(String.format("Forward %d", num));
@@ -63,6 +93,7 @@ public class ForwardEncoder extends CommandBase {
         executePIDControl(currentEncoderValue);
     }
 
+
     // Called once the command ends or is interrupted
     @Override
     public void end(boolean interrupted) {
@@ -71,12 +102,19 @@ public class ForwardEncoder extends CommandBase {
         RobotContainer.train.getSensorSystem().resetGyro();
         pidYAxis.close();
         pidZAxis.close();
+        pid1.close();
+        pid2.close();
     }
 
     void updateSetpointIfNeeded(double currentTime, double currentEncoderValue) {
         if ((currentTime - startTime >= 0.1 || firstExecution) && debug) {
             setpoint = RobotContainer.train.getShuffleboardSystem().getAdditionalValueOutput().getDouble(0) * 40;
-            pidYAxis.setSetpoint(setpoint * 40);
+            if(use_Zpid){
+                pidYAxis.setSetpoint(setpoint * 40);
+            }else{
+                pid1.setSetpoint(setpoint * 40);
+                pid2.setSetpoint(-setpoint * 40);
+            }
             updatePID();
             startTime = currentTime;
             firstExecution = false;
@@ -84,7 +122,7 @@ public class ForwardEncoder extends CommandBase {
     }
 
     void checkAndCorrectStuckEncoder(double currentEncoderValue) {
-        if (currentEncoderValue == lastEncoderValue && !pidYAxis.atSetpoint() && pidYAxis.getI() != 0.15) {
+        if (currentEncoderValue == lastEncoderValue && !pidYAxis.atSetpoint() && pidYAxis.getI() != INTEGRAL_ENABLED_I) {
             encoderStuckCounter++;
             if (encoderStuckCounter >= 5) {
                 enableIntegral();
@@ -97,11 +135,18 @@ public class ForwardEncoder extends CommandBase {
     }
 
     void executePIDControl(double currentEncoderValue) {
-        double outY = pidYAxis.calculate(currentEncoderValue, setpoint);
-        double outZ = pidZAxis.calculate(RobotContainer.train.getSensorSystem().getAngle(), pidZAxis.getSetpoint());
-
-        RobotContainer.train.getMotorSystem().holonomicDrive(0.0, MathUtil.clamp(outY, -0.55, 0.55), 0.0,
-                MathUtil.clamp(outZ, -0.4, 0.4), 0.0);
+        acceleration=MathUtil.clamp(acceleration+0.05, 0.0, 0.4);
+        if(use_Zpid){
+            double outY = pidYAxis.calculate(currentEncoderValue, setpoint);
+            double outZ = pidZAxis.calculate(RobotContainer.train.getSensorSystem().getAngle(), pidZAxis.getSetpoint());
+            RobotContainer.train.getMotorSystem().holonomicDrive(0.0, MathUtil.clamp(outY, -acceleration, acceleration), 0.0,
+            MathUtil.clamp(outZ, -0.4, 0.4), 0.0);
+        }else{
+            double left = pid1.calculate(RobotContainer.train.getMotorSystem().getLeftEncoderDistance());
+            double right = pid2.calculate(RobotContainer.train.getMotorSystem().getRightEncoderDistance());
+            RobotContainer.train.getMotorSystem().setLeftMotorSpeed(MathUtil.clamp(left,-acceleration,acceleration));
+            RobotContainer.train.getMotorSystem().setRightMotorSpeed(MathUtil.clamp(right,-acceleration,acceleration));
+        }
 
         if (debug) {
             RobotContainer.train.getShuffleboardSystem().updateTestString(String.format("S: %.1f SY: %.1f D: %.1f DY: %.1f",
@@ -116,21 +161,42 @@ public class ForwardEncoder extends CommandBase {
     }
 
     void enableIntegral() {
-        pidYAxis.reset();
-        pidYAxis.setI(0.15);
-        System.out.println("Enabled I 0.15");
+        if(use_Zpid){
+            pidYAxis.reset();
+            pidYAxis.setI(INTEGRAL_ENABLED_I);
+            System.out.println("F Enabled I " + INTEGRAL_ENABLED_I);
+        }else{
+            pid1.reset();
+            pid2.reset();
+            pid1.setI(INTEGRAL_ENABLED_I);
+            pid2.setI(INTEGRAL_ENABLED_I);
+            System.out.println("F Enabled I " + INTEGRAL_ENABLED_I);
+        }
     }
 
     @Override
     public boolean isFinished() {
-        if (pidYAxis.atSetpoint() && !debug) {
-            atSetpointCounter++;
-            if (atSetpointCounter >= 10) {
-                return true;
+        if(use_Zpid){
+            if (pidYAxis.atSetpoint() && !debug) {
+                atSetpointCounter++;
+                if (atSetpointCounter >= 10) {
+                    return true;
+                }
+            } else {
+                atSetpointCounter = 0;
             }
-        } else {
-            atSetpointCounter = 0;
+            return false;
+        }else{
+            if (pid1.atSetpoint() && pid2.atSetpoint()) {
+                atSetpointCounter++;
+                if (atSetpointCounter >= 10) {
+                    return true;
+                }
+            } else {
+                atSetpointCounter = 0;
+            }
+            return false;
+
         }
-        return false;
     }
 }

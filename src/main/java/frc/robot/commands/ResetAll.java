@@ -12,17 +12,20 @@ public class ResetAll extends CommandBase {
     public void initialize() {
         RobotContainer.train.getMotorSystem().resetEncoders();
         RobotContainer.train.getSensorSystem().resetGyro();
+        RobotContainer.train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
     }
 
     @Override
     public void execute() {
         RobotContainer.train.getMotorSystem().resetEncoders();
         RobotContainer.train.getSensorSystem().resetGyro();
+        RobotContainer.train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
     }
     @Override
     public void end(boolean interrupted) {
         RobotContainer.train.getMotorSystem().resetEncoders();
         RobotContainer.train.getSensorSystem().resetGyro();
+        RobotContainer.train.getMotorSystem().setMotorSpeeds(0., 0., 0.);
     }
     @Override
     public boolean isFinished() {

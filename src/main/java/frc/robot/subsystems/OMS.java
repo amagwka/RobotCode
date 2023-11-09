@@ -6,6 +6,7 @@ import com.studica.frc.TitanQuad;
 import com.studica.frc.TitanQuadEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.C;
+import frc.robot.RobotContainer;
 
 public class OMS extends SubsystemBase {
 
@@ -36,12 +37,15 @@ public class OMS extends SubsystemBase {
         liftEncoder.reset();
     }
 
+    public TitanQuadEncoder getLiftEncoder() {
+        return liftEncoder;
+    }
+    
+
     @Override
     public void periodic() {
-        
     }
 
 	public void setGripper2Position(double r_LiftSpeed) {
-
 	}
 }

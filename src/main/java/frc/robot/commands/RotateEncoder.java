@@ -64,19 +64,21 @@ public class RotateEncoder extends CommandBase {
     private void updateYawAndPIDIfNecessary(double currentSetpointYaw) {
         if (debug) {
             pidZAxis.setSetpoint(currentSetpointYaw);
+            updatePID();
         }
-        updatePID();
     }
 
     private void checkForAngleStability(double angle) {
-        if (Math.abs(angle - previousAngle) <= 1) {
-            counter++;
-        } else {
-            counter = 0;
-        }
-        if (counter >= ANGLE_STABILITY_THRESHOLD) {
-            enableIntegral();
-            counter = 0;
+        if(pidZAxis.getI() != INTEGRAL_ENABLED_I){
+            if (Math.abs(angle - previousAngle) <= 1) {
+                counter++;
+            } else {
+                counter = 0;
+            }
+            if (counter >= ANGLE_STABILITY_THRESHOLD) {
+                enableIntegral();
+                counter = 0;
+            }
         }
     }
 
@@ -85,9 +87,9 @@ public class RotateEncoder extends CommandBase {
     }
 
     private void updateDebugInfoIfNecessary(double angle) {
-        //if (debug)
+        if (debug)
             RobotContainer.train.getShuffleboardSystem()
-                    .updateTestString(String.format("S: %.2f O: %.2f A: %.2f", pidZAxis.getSetpoint(), out, angle));
+                .updateTestString(String.format("S: %.2f O: %.2f A: %.2f", pidZAxis.getSetpoint(), out, angle));
     }
 
     @Override
@@ -104,6 +106,7 @@ public class RotateEncoder extends CommandBase {
 
     private void enableIntegral() {
         pidZAxis.reset();
+        System.out.println("Rotate Integral enabled " + INTEGRAL_ENABLED_I);
         pidZAxis.setI(INTEGRAL_ENABLED_I);
     }
 
