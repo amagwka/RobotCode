@@ -98,6 +98,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
         ATO.setString(text);
     }
 	public void setIR(double ir1, double ir2) {
-        ir.setString(String.format("1: %.1f 2: %.1f", ir1, ir2));
+        ir.setString(String.format("1: %.2f 2: %.2f", ir1, ir2));
 	}
 }

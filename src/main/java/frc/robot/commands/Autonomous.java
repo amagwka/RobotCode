@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.dist.ForwardIR;
+import frc.robot.commands.dist.IRAlign;
 
 public class Autonomous extends SequentialCommandGroup
 {
@@ -11,6 +13,10 @@ public class Autonomous extends SequentialCommandGroup
     {
         addCommands(
           new ResetAll(),
+          new IRAlign(10, 0.2, 1),
+          new ResetAll(),
+          new ForwardIR(20, 1, true, 1),
+          /*
           new ForwardEncoder(250, p, false,2),
           new ResetAll(),
           new SideEncoder(-80, p, false, 1),
@@ -84,13 +90,13 @@ public class Autonomous extends SequentialCommandGroup
           new ForwardEncoder(50, 5, false,6),
           new RotateEncoder(-90, 1, false,7),
           new ForwardEncoder(45, 5, false,8)*/
-
+        
           //new ServoAuto(0, 0),
           //new ServoAuto(0, 180)
         /*new ForwardEncoder(732, 1,false),
         new RotateEncoder(180, 1,false),
-        new ForwardEncoder(732, 1,false),
-        new StopMotors()*/
+        new ForwardEncoder(732, 1,false),*/
+        new StopMotors(),
         new ResetAll());
 
       }
