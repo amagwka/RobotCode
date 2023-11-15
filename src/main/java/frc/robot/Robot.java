@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
   //private final Notifier notifier;
 
   public Robot() {
-    super(0.02);
+    //super(0.02);
     //notifier = new Notifier(this::customPeriodic);
     //notifier.startPeriodic(0.05);  // Set the period to 50ms
   }
@@ -67,9 +67,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer(new MotorSystem(2, 0, 3), new SensorSystem(), new ShuffleboardSystem());
     drive = new Drive();
     auto = new Autonomous();
-    b_start = new DigitalInput(8);
-    b_stop = new DigitalInput(9);
     sMotors = new StopMotors();
+    b_stop = new DigitalInput(0);
+    b_start = new DigitalInput(1);
+
     /*
     new Thread(() -> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -99,11 +100,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     CommandScheduler.getInstance().schedule(auto);
+
   }
 
   @Override
   public void autonomousPeriodic() {
-    /*
     boolean currentStartState = b_start.get();
     boolean currentStopState = b_stop.get();
   
@@ -119,7 +120,7 @@ public class Robot extends TimedRobot {
     }
   
     lastStartState = currentStartState;
-    lastStopState = currentStopState;*/
+    lastStopState = currentStopState;
   }
 
   @Override
@@ -133,8 +134,6 @@ public class Robot extends TimedRobot {
   
   @Override
   public void testInit() {
-    
-
 //     CommandScheduler.getInstance().cancelAll();
 //     try {
 //       BufferedWriter writer = new BufferedWriter(new FileWriter("f.txt"));
@@ -162,6 +161,23 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void testPeriodic() {
+    boolean currentStartState = b_start.get();
+    boolean currentStopState = b_stop.get();
+  
+    if (!currentStartState && lastStartState) {
+        //CommandScheduler.getInstance().schedule(auto);
+        System.out.println("Scheduled");
+    }
+  
+    if (!currentStopState && lastStopState) {
+      //sMotors.initialize();
+      //CommandScheduler.getInstance().cancelAll();
+      System.out.println("Cancel");
+    }
+  
+    lastStartState = currentStartState;
+    lastStopState = currentStopState;
+
   }
   @Override
   public void disabledInit() {

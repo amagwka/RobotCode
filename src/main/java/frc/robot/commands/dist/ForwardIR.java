@@ -20,7 +20,7 @@ public class ForwardIR extends CommandBase {
     private int atSetpointCounter = 0;
     private int encoderStuckCounter = 0;
 
-    private double INTEGRAL_ENABLED_I = 0.01;
+    private double INTEGRAL_ENABLED_I = 0.05;
 
 
     private double lastEncoderValue = 0.0;
@@ -64,9 +64,9 @@ public class ForwardIR extends CommandBase {
         double currentIRValue1 = RobotContainer.train.getSensorSystem().getIR1Distance();
         double currentIRValue2 = RobotContainer.train.getSensorSystem().getIR2Distance();
 
-        updateSetpointIfNeeded(currentTime, (currentIRValue1+ currentIRValue2)/2);
-        checkAndCorrectStuckEncoder( (currentIRValue1+ currentIRValue2)/2);
-        executePIDControl( (currentIRValue1+ currentIRValue2)/2);
+        updateSetpointIfNeeded(currentTime, (currentIRValue1 + currentIRValue2)/2);
+        checkAndCorrectStuckEncoder( (currentIRValue1 + currentIRValue2)/2);
+        executePIDControl( (currentIRValue1 + currentIRValue2)/2);
     }
 
 
@@ -129,7 +129,7 @@ public class ForwardIR extends CommandBase {
     void enableIntegral() {
             pidYAxis.reset();
             pidYAxis.setI(INTEGRAL_ENABLED_I);
-            System.out.println("F Enabled I " + INTEGRAL_ENABLED_I);
+            System.out.println("F_IR Enabled I " + INTEGRAL_ENABLED_I);
     }
 
     @Override

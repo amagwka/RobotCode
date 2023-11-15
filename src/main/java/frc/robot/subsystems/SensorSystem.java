@@ -22,7 +22,7 @@ public class SensorSystem {
     public AnalogInput sharp1;
     private AnalogInput sharp2;
     public AHRS gyro;
-    
+
     private SensorAverage IR1sensorAverage;
     private SensorAverage IR2sensorAverage;
     private USensorAverage U1sensorAverage;
@@ -33,9 +33,7 @@ public class SensorSystem {
     private SensorAverageUpdater IR1sensorUpdater;
     private SensorAverageUpdater IR2sensorUpdater;
     private USensorAverageUpdater U1sensorUpdater;
-    private USensorAverageUpdater U2sensorUpdater;
     private Thread U1sensorThread;
-    private Thread U2sensorThread;
 
 
     public SensorSystem() {
@@ -44,9 +42,9 @@ public class SensorSystem {
         this.sharp2= new AnalogInput(1);
 
         this.sonic1 = new Ultrasonic(8, 9);
-        this.sonic1.setAutomaticMode(true);
+        //this.sonic1.setAutomaticMode(true);
 
-        //this.sonic2 = new Ultrasonic(12, 13);
+        this.sonic2 = new Ultrasonic(10, 11);
         //this.sonic2.setAutomaticMode(true);
         
         IR1sensorAverage = new SensorAverage();
@@ -70,12 +68,11 @@ public class SensorSystem {
         U1sensorAverage = new USensorAverage();
         U2sensorAverage = new USensorAverage();
 
-        U1sensorUpdater = new USensorAverageUpdater(U1sensorAverage, sonic1);
-        U2sensorUpdater = new USensorAverageUpdater(U1sensorAverage, sonic2);
+        U1sensorUpdater = new USensorAverageUpdater(U1sensorAverage, U2sensorAverage, sonic1, sonic2);
 
         U1sensorThread = new Thread(U1sensorUpdater);
-        U2sensorThread = new Thread(U2sensorUpdater);
 
+        U1sensorThread.start();
 
         this.gyro = new AHRS(SPI.Port.kMXP);
     }
@@ -104,12 +101,12 @@ public class SensorSystem {
     public double getSonic1Distance() {
         //sonic.ping();
         //Timer.delay(0.003);
-        return U1sensorAverage.getAverage();
+        return U1sensorAverage.getMedian()/10;
     }
     public double getSonic2Distance() {
         //sonic.ping();
         //Timer.delay(0.003);
-        return U2sensorAverage.getAverage();
+        return U2sensorAverage.getMedian()/10;
     }
 
     public double getYaw() {
@@ -131,12 +128,13 @@ public class SensorSystem {
     public void stopSensorThreads() {
         IR1sensorUpdater.stop();
         IR2sensorUpdater.stop();
+        U1sensorUpdater.stop();
 
         try {
-            IR1sensorThread.join(); // Wait for the thread to finish executing
-            IR2sensorThread.join(); // Wait for the thread to finish executing
+            IR1sensorThread.join();
+            IR2sensorThread.join();
+            U1sensorThread.join();
         } catch (InterruptedException e) {
-            // Handle interruption
             Thread.currentThread().interrupt();
         }
     }
@@ -147,7 +145,7 @@ public class SensorSystem {
     public void FilterUpdate(){
         IR1sensorAverage.addSample(Math.pow(sharp1.getAverageVoltage(), -1.2045) * 27.726);
         IR2sensorAverage.addSample(Math.pow(sharp2.getAverageVoltage(), -1.2045) * 27.726);
-        //U1sensorAverage.addSample(sonic1.getRangeMM());
-        //U2sensorAverage.addSample(sonic2.getRangeMM());
+        U1sensorAverage.addSample(sonic1.getRangeMM());
+        U2sensorAverage.addSample(sonic2.getRangeMM());
     }
 }

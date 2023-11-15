@@ -19,7 +19,7 @@ public class IRAlign extends CommandBase {
     private int atSetpointCounter = 0;
     private int encoderStuckCounter = 0;
 
-    private double INTEGRAL_ENABLED_I = 0.05;
+    private double INTEGRAL_ENABLED_I = 0.1;
 
 
     private double lastIRValue1 = 0.0;
@@ -38,7 +38,7 @@ public class IRAlign extends CommandBase {
 
         addRequirements(RobotContainer.train);
 
-        pidYAxis = new PIDController(0.1, 0.0, 0.0);
+        pidYAxis = new PIDController(0.07, 0.0, 0.0);
         pidYAxis.setTolerance(epsilon);
         pidYAxis.setIntegratorRange(-0.5, 0.5);
 
@@ -56,7 +56,7 @@ public class IRAlign extends CommandBase {
 
         startTime = Timer.getFPGATimestamp();
         firstExecution = true;
-        RobotContainer.train.getShuffleboardSystem().getATO().setString(String.format("Forward %d", num));
+        RobotContainer.train.getShuffleboardSystem().getATO().setString(String.format("IRAlign %d", num));
     }
 
     @Override
@@ -115,7 +115,7 @@ public class IRAlign extends CommandBase {
     }
 
     void executePIDControl(double currentIRValue1, double currentIRValue2) {
-        acceleration=MathUtil.clamp(acceleration + ACC_SPEED, 0.0, 0.4);
+        acceleration = MathUtil.clamp(acceleration + ACC_SPEED, 0.0, 0.4);
         double out1 = pidYAxis.calculate(currentIRValue1, setpoint);
         double out2 = pidYAxis2.calculate(currentIRValue2,setpoint);
         RobotContainer.train.getMotorSystem().setMotorSpeeds(- MathUtil.clamp(out1, -acceleration, acceleration),
@@ -138,7 +138,7 @@ public class IRAlign extends CommandBase {
             pidYAxis2.reset();
             pidYAxis.setI(INTEGRAL_ENABLED_I);
             pidYAxis2.setI(INTEGRAL_ENABLED_I);
-            System.out.println("F Enabled I " + INTEGRAL_ENABLED_I);
+            System.out.println("IR_Align Enabled I " + INTEGRAL_ENABLED_I);
     }
 
     @Override

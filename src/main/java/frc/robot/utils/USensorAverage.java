@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class USensorAverage {
-    private static final int MAX_SAMPLES = 5;
+    private static final int MAX_SAMPLES = 10;
     private final Queue<Double> samples;
     private double sum = 0.0;
 

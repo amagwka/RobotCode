@@ -3,6 +3,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.dist.ForwardIR;
 import frc.robot.commands.dist.IRAlign;
+import frc.robot.commands.dist.SideU;
+import frc.robot.commands.dist.SideUMedian;
 
 public class Autonomous extends SequentialCommandGroup
 {
@@ -13,9 +15,26 @@ public class Autonomous extends SequentialCommandGroup
     {
         addCommands(
           new ResetAll(),
-          new IRAlign(10, 0.2, 1),
+          new IRAlign(20, 1.0, 1),
           new ResetAll(),
-          new ForwardIR(20, 1, true, 1),
+          //new IRAlign(12, 0.2, 1),
+          //new ResetAll(),
+
+          new IRAlign(12, 0.3, 1),
+          new ResetAll(),
+          
+          new ForwardIR(20, 0.2, false, 1),
+          new ResetAll(),
+//frc.robot.commands.dist.SideU.SideU(double setpoint, double epsilon, boolean debug, int num)
+          new SideUMedian(20),
+          /*new ResetAll(),
+
+          new SideEncoder(-160, p, false, 1),
+          new ResetAll(),
+
+          new SideEncoder(+80, p, false, 1),*/
+
+
           /*
           new ForwardEncoder(250, p, false,2),
           new ResetAll(),

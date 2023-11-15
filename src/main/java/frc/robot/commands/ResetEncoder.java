@@ -11,12 +11,11 @@ public class ResetEncoder extends CommandBase {
 
     @Override
     public void initialize() {
-        
     }
 
     @Override
     public void execute() {
-            
+        RobotContainer.train.getMotorSystem().resetEncoders();
     }
     @Override
     public void end(boolean interrupted) {
